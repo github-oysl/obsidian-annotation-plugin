@@ -1,0 +1,22 @@
+{
+  "name": "scholiast",
+  "version": "0.4.2",
+  "description": "Highlight text and add annotations like Microsoft Word comments.",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/ux.test.mjs",
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@codemirror/commands": "6.5.0",
+    "@codemirror/state": "6.5.0",
+    "@codemirror/view": "6.38.6",
+    "@types/node": "^22.15.17",
+    "esbuild": "0.25.5",
+    "obsidian": "latest",
+    "typescript": "^5.8.3"
+  }
+}
