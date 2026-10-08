@@ -1,9 +1,9 @@
 {
-  "id": "article-annotator",
-  "name": "Article Annotator",
-  "version": "0.3.4",
+  "id": "marginalia",
+  "name": "Marginalia",
+  "version": "0.4.0",
   "minAppVersion": "1.0.0",
-  "description": "Highlight text and add annotations like Microsoft Word comments.",
+  "description": "Add highlights, notes and tags to Markdown and PDF without editing the source",
   "author": "Juno",
   "isDesktopOnly": false
 }
