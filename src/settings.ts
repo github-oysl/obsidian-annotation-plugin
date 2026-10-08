@@ -13,12 +13,11 @@ export class AnnotatorSettingTab extends PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: t("pluginName", this.plugin) + " · " + t("settings.about", this.plugin) });
     containerEl.createEl("p", {
       text: t("ui.emptyHint", this.plugin)
     });
     containerEl.createEl("hr");
-    
+
     // Default color
     new Setting(containerEl)
       .setName(t("settings.defaultColor", this.plugin))
@@ -33,7 +32,7 @@ export class AnnotatorSettingTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         });
       });
-    
+
     containerEl.createEl("hr");
     new Setting(containerEl)
       .setName(t("settings.language", this.plugin))
@@ -48,22 +47,20 @@ export class AnnotatorSettingTab extends PluginSettingTab {
           this.display();
         });
       });
-    
-    containerEl.createEl("h3", { text: t("settings.highlightColors", this.plugin) });
+
+    new Setting(containerEl).setName(t("settings.highlightColors", this.plugin)).setHeading();
     const colorList = containerEl.createDiv("aa-settings-colors");
     this.plugin.settings.colors.forEach((color, i) => {
       const row = colorList.createDiv("aa-color-row");
-      row.style.cssText = "display:flex;align-items:center;gap:8px;margin:4px 0;";
-      const swatch = row.createEl("span");
-      swatch.style.cssText = `display:inline-block;width:24px;height:24px;background:${color};border-radius:4px;border:1px solid var(--background-modifier-border);`;
+      const swatch = row.createSpan("aa-color-preview");
+      swatch.setCssProps({ "--aa-color": color });
       const hexInput = row.createEl("input", {
         attr: { type: "text", value: color, maxlength: "7" }
       });
-      hexInput.style.cssText = "width:80px;padding:2px 6px;font-family:monospace;";
-      const label = row.createEl("span", {
+      row.createSpan({
+        cls: "aa-color-name",
         text: getColorName(color, this.plugin) || t("settings.custom", this.plugin)
       });
-      label.style.cssText = "font-size:12px;color:var(--text-muted);";
       const commitHex = async () => {
         const newColor = hexInput.value.trim();
         if (!/^#[0-9a-fA-F]{6}$/.test(newColor)) {
@@ -73,7 +70,7 @@ export class AnnotatorSettingTab extends PluginSettingTab {
         if (newColor === this.plugin.settings.colors[i])
           return;
         this.plugin.settings.colors[i] = newColor;
-        swatch.style.background = newColor;
+        swatch.setCssProps({ "--aa-color": newColor });
         await this.plugin.saveSettings();
       };
       hexInput.onchange = () => {
@@ -86,44 +83,36 @@ export class AnnotatorSettingTab extends PluginSettingTab {
         }
       });
     });
-    
+
     // 自定义颜色设置
-    const customColorRow = colorList.createDiv("aa-color-row");
-    customColorRow.style.cssText = "display:flex;align-items:center;gap:8px;margin:4px 0;padding:8px 0;border-top:1px dashed var(--background-modifier-border);";
-    const customSwatch = customColorRow.createEl("span");
-    customSwatch.style.cssText = "display:inline-block;width:24px;height:24px;border-radius:4px;border:1px solid var(--background-modifier-border);background:var(--background-secondary);";
+    const customColorRow = colorList.createDiv("aa-color-row is-custom");
+    const customSwatch = customColorRow.createSpan("aa-color-preview");
     const customHexInput = customColorRow.createEl("input", {
-      attr: { type: "text", placeholder: "#FCD34D", maxlength: "7" }
+      attr: { type: "text", placeholder: "#123456", maxlength: "7" }
     });
-    customHexInput.style.cssText = "width:80px;padding:2px 6px;font-family:monospace;";
-    const customLabel = customColorRow.createEl("span", {
+    customColorRow.createSpan({
+      cls: "aa-color-name",
       text: t("ui.customColor", this.plugin)
     });
-    customLabel.style.cssText = "font-size:12px;color:var(--text-muted);";
-    
+
     // 更新预览色块
     const updateCustomSwatch = () => {
       const value = customHexInput.value.trim();
-      if (validateHexColor(value)) {
-        customSwatch.style.background = value;
-        customSwatch.style.borderColor = value;
-      } else {
-        customSwatch.style.background = "var(--background-secondary)";
-        customSwatch.style.borderColor = "var(--background-modifier-border)";
-      }
+      const color = validateHexColor(value) ? value : "var(--background-secondary)";
+      customSwatch.setCssProps({ "--aa-color": color });
     };
-    
+
     // 初始化预览
     if (this.plugin.settings.customHighlightColor && validateHexColor(this.plugin.settings.customHighlightColor)) {
       customHexInput.value = this.plugin.settings.customHighlightColor;
-      updateCustomSwatch();
     }
-    
+    updateCustomSwatch();
+
     // 输入时实时更新预览
     customHexInput.oninput = () => {
       updateCustomSwatch();
     };
-    
+
     // 失去焦点时验证并保存
     const commitCustomColor = async () => {
       const value = customHexInput.value.trim();
@@ -148,24 +137,22 @@ export class AnnotatorSettingTab extends PluginSettingTab {
         void commitCustomColor();
       }
     });
-    
+
     // 自定义颜色名称输入框
-    const customNameRow = colorList.createDiv("aa-color-row");
-    customNameRow.style.cssText = "display:flex;align-items:center;gap:8px;margin:4px 0;padding:4px 0 8px 32px;";
-    const customNameLabel = customNameRow.createEl("span", {
+    const customNameRow = colorList.createDiv("aa-color-row is-custom-name");
+    customNameRow.createSpan({
+      cls: "aa-color-name is-small",
       text: t("ui.customColorName", this.plugin)
     });
-    customNameLabel.style.cssText = "font-size:11px;color:var(--text-muted);min-width:80px;";
     const customNameInput = customNameRow.createEl("input", {
       attr: { type: "text", placeholder: "自定义", maxlength: "12" }
     });
-    customNameInput.style.cssText = "width:120px;padding:2px 6px;font-size:12px;";
-    
+
     // 初始化名称
     if (this.plugin.settings.customHighlightColorName) {
       customNameInput.value = this.plugin.settings.customHighlightColorName;
     }
-    
+
     // 失去焦点时保存名称
     const commitCustomName = async () => {
       const name = customNameInput.value.trim() || "自定义";
@@ -184,19 +171,18 @@ export class AnnotatorSettingTab extends PluginSettingTab {
         void commitCustomName();
       }
     });
-    
+
     containerEl.createEl("hr");
-    containerEl.createEl("h3", { text: t("settings.shortcuts", this.plugin) });
+    new Setting(containerEl).setName(t("settings.shortcuts", this.plugin)).setHeading();
     const shortcuts = containerEl.createDiv("aa-shortcut-list");
     void this.renderShortcutHints(shortcuts);
-    
+
     containerEl.createEl("hr");
-    const readingModeNotice = containerEl.createDiv();
-    readingModeNotice.style.cssText = "padding:10px 12px;margin:8px 0;border-radius:8px;background:var(--background-secondary);color:var(--text-muted);font-size:12px;line-height:1.6;border:1px solid var(--background-modifier-border);";
+    const readingModeNotice = containerEl.createDiv("aa-reading-mode-notice");
     readingModeNotice.setText(t("settings.readingModeNotice", this.plugin));
-    containerEl.createEl("h3", { text: t("settings.about", this.plugin) });
+    new Setting(containerEl).setName(t("settings.about", this.plugin)).setHeading();
     const aboutEl = containerEl.createEl("p");
-    aboutEl.innerHTML = t("settings.aboutText", this.plugin).replace("${version}", this.plugin.manifest.version);
+    aboutEl.setText(t("settings.aboutText", this.plugin).replace("${version}", this.plugin.manifest.version));
   }
   async renderShortcutHints(container: HTMLElement) {
     const commands: Array<[string, string]> = [
@@ -236,4 +222,4 @@ export class AnnotatorSettingTab extends PluginSettingTab {
       cls: "aa-shortcut-hint"
     });
   }
-};
+}

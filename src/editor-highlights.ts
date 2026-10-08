@@ -57,10 +57,9 @@ class AnnotationGutterMarker extends GutterMarker {
     return other instanceof AnnotationGutterMarker && other.color === this.color && other.annotationId === this.annotationId;
   }
   toDOM(view: EditorView) {
-    const el = view.dom.ownerDocument.createElement("div");
-    el.className = "aa-gutter-marker";
+    const el = createDiv("aa-gutter-marker");
     el.dataset.annotationId = this.annotationId;
-    el.style.setProperty("--aa-accent", this.color);
+    el.setCssProps({ "--aa-accent": this.color });
     return el;
   }
 }

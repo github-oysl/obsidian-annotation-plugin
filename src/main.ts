@@ -67,19 +67,17 @@ export default class ArticleAnnotator extends Plugin {
   data: Annotation[] = [];
   groups: HighlightGroup[] = [];
   activeFile: TFile | null = null;
-  sidebarView: AnnotatorSidebarView | null = null;
   mobileFabEl: HTMLButtonElement | null = null;
   mobileFabPanelEl: HTMLElement | null = null;
   pdfContextMenuHandler: ((event: MouseEvent) => void) | null = null;
-  pdfRenderTimers = new Map<string, ReturnType<typeof setTimeout>>();
-  reanchorTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  pdfRenderTimers = new Map<string, number>();
+  reanchorTimers = new Map<string, number>();
   annotationStorePath = `${ANNOTATION_STORE_DIR}/${ANNOTATION_STORE_FILE}`;
   isReloadingAnnotationStore = false;
   settings: AnnotatorSettings = { ...DEFAULT_SETTINGS };
 
   // ==================== 生命周期 ====================
   async onload() {
-    console.log("\u{1F4DD} \u6587\u7AE0\u6279\u6CE8: loading...");
     await this.loadSettingsAndData();
     this.registerEditorExtension(highlightField);
     this.registerEditorExtension(annotationGutterField);
@@ -88,7 +86,6 @@ export default class ArticleAnnotator extends Plugin {
     this.registerEditorExtension(createAnnotationHistoryExtension((op) => {
       void this.applyAnnotationHistory(op);
     }));
-    const plugin = this;
     this.registerEditorExtension(
       EditorView.domEventHandlers({
         click: (event: MouseEvent) => {
@@ -99,18 +96,15 @@ export default class ArticleAnnotator extends Plugin {
           const target = rawTarget.closest("[data-annotation-id]");
           const id = target instanceof HTMLElement ? target.dataset.annotationId : undefined;
           if (id) {
-            plugin.sidebarView?.scrollToCard(id);
+            this.getSidebarView()?.scrollToCard(id);
           }
         }
       })
     );
-    this.registerView(VIEW_TYPE, (leaf) => {
-      this.sidebarView = new AnnotatorSidebarView(leaf, this);
-      return this.sidebarView;
-    });
+    this.registerView(VIEW_TYPE, (leaf) => new AnnotatorSidebarView(leaf, this));
     this.registerView(VIEW_TYPE_LIBRARY, (leaf) => new AnnotationLibraryView(leaf, this));
     this.addRibbonIcon("pen-tool", t("pluginName", this), () => {
-      this.activateSidebar();
+      void this.activateSidebar();
     });
     this.registerEvent(
       this.app.workspace.on("editor-menu", (menu, editor, view) => {
@@ -126,7 +120,7 @@ export default class ArticleAnnotator extends Plugin {
         const file = view instanceof FileView ? view.file : null;
         if (!file)
           return;
-        this.handleActiveFileChange(file);
+        void this.handleActiveFileChange(file);
       })
     );
     this.registerEvent(
@@ -239,8 +233,8 @@ export default class ArticleAnnotator extends Plugin {
     this.cleanupMobileFab();
     this.clearPdfHighlightLayers();
     this.clearPdfRenderTimers();
-    this.app.workspace.detachLeavesOfType(VIEW_TYPE);
-    this.app.workspace.detachLeavesOfType(VIEW_TYPE_LIBRARY);
+    
+    
   }
   async finishStartup() {
     await this.initSidebar();
@@ -267,15 +261,15 @@ export default class ArticleAnnotator extends Plugin {
   }
   clearReanchorTimers() {
     for (const timer of this.reanchorTimers.values())
-      clearTimeout(timer);
+      window.clearTimeout(timer);
     this.reanchorTimers.clear();
   }
   /** 正文改动后稍等再对齐，避免每个字符都重写批注文件。 */
   scheduleReanchor(file: TFile, editor: Editor) {
     const pending = this.reanchorTimers.get(file.path);
     if (pending)
-      clearTimeout(pending);
-    const timer = setTimeout(() => {
+      window.clearTimeout(pending);
+    const timer = window.setTimeout(() => {
       this.reanchorTimers.delete(file.path);
       void this.reconcileMarkdownFile(file, editor);
     }, 500);
@@ -437,9 +431,9 @@ export default class ArticleAnnotator extends Plugin {
     }
     const leaf = this.leafForAnnotation(annotation.filePath);
     await leaf.openFile(file);
-    this.app.workspace.revealLeaf(leaf);
+    void this.app.workspace.revealLeaf(leaf);
     if (annotation.fileType === "pdf") {
-      setTimeout(() => this.jumpToPdfAnnotation(annotation), 220);
+      window.setTimeout(() => this.jumpToPdfAnnotation(annotation), 220);
       return;
     }
     this.waitForViewAndNavigate(annotation);
@@ -460,7 +454,7 @@ export default class ArticleAnnotator extends Plugin {
       );
       view.editor.focus();
     } else if (retries > 0) {
-      setTimeout(() => this.waitForViewAndNavigate(annotation, retries - 1), 120);
+      window.setTimeout(() => this.waitForViewAndNavigate(annotation, retries - 1), 120);
     }
   }
 
@@ -538,7 +532,7 @@ export default class ArticleAnnotator extends Plugin {
       const leaf = this.app.workspace.getRightLeaf(false) || this.app.workspace.getLeaf("split", "vertical");
       if (leaf) {
         await leaf.setViewState({ type: VIEW_TYPE, active: true });
-        this.app.workspace.revealLeaf(leaf);
+        void this.app.workspace.revealLeaf(leaf);
       }
     }
     const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
@@ -560,7 +554,7 @@ export default class ArticleAnnotator extends Plugin {
       }
     }
     if (leaf) {
-      workspace.revealLeaf(leaf);
+      void workspace.revealLeaf(leaf);
     }
   }
   // ==================== 光标处的旧批注 ====================
@@ -578,7 +572,7 @@ export default class ArticleAnnotator extends Plugin {
     const to = { line: position.endLine, ch: position.endCh };
     editor.setSelection(from, to);
     editor.scrollIntoView({ from, to }, true);
-    this.sidebarView?.scrollToCard(annotation.id);
+    this.getSidebarView()?.scrollToCard(annotation.id);
   }
   /** 还没对上、或已经对不上的记录，不拿旧行号去选正文。 */
   anchoredOk(annotation: Annotation): boolean {
@@ -587,7 +581,7 @@ export default class ArticleAnnotator extends Plugin {
   async revealUnanchored(annotation: Annotation) {
     new Notice(t("notifications.anchorLost", this));
     await this.activateSidebar();
-    this.sidebarView?.scrollToCard(annotation.id);
+    this.getSidebarView()?.scrollToCard(annotation.id);
   }
   async locateAnnotationAtCursor(editor: Editor, view: { file: TFile | null }) {
     const found = this.annotationAtCursor(editor, view);
@@ -980,10 +974,17 @@ export default class ArticleAnnotator extends Plugin {
         await leaf.setViewState({ type: VIEW_TYPE_LIBRARY, active: true });
     }
     if (leaf)
-      workspace.revealLeaf(leaf);
+      void workspace.revealLeaf(leaf);
+  }
+  getSidebarView(): AnnotatorSidebarView | null {
+    for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE)) {
+      if (leaf.view instanceof AnnotatorSidebarView)
+        return leaf.view;
+    }
+    return null;
   }
   refreshAnnotationViews(file: TFile | null = this.activeFile) {
-    this.sidebarView?.update(file);
+    this.getSidebarView()?.update(file);
     for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_LIBRARY)) {
       if (leaf.view instanceof AnnotationLibraryView)
         leaf.view.render();

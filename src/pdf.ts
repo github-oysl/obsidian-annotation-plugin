@@ -20,7 +20,7 @@ function getPdfPageElementFromNode(node: EventTarget | null): HTMLElement | null
 function getPdfPageNumber(pageEl: Element | null): number | null {
   if (!(pageEl instanceof Element))
     return null;
-  const datasetPage = pageEl instanceof HTMLElement ? pageEl.dataset.pageNumber : undefined;
+  const datasetPage = pageEl.instanceOf(HTMLElement) ? pageEl.dataset.pageNumber : undefined;
   const raw = pageEl.getAttribute("data-page-number") || datasetPage || pageEl.getAttribute("data-page") || pageEl.getAttribute("aria-label")?.match(/\d+/)?.[0];
   const page = Number(raw);
   return Number.isFinite(page) ? page : null;
@@ -40,11 +40,10 @@ function ensurePdfLayer(pageEl: Element | null): HTMLElement | null {
   if (existing instanceof HTMLElement) {
     return existing;
   }
-  const layer = pageEl.ownerDocument.createElement("div");
-  layer.className = "aa-pdf-highlight-layer";
+  const layer = createDiv("aa-pdf-highlight-layer");
   const position = window.getComputedStyle(pageEl).position;
   if (!position || position === "static") {
-    pageEl.style.position = "relative";
+    pageEl.setCssStyles({ position: "relative" });
   }
   pageEl.appendChild(layer);
   return layer;
@@ -52,9 +51,8 @@ function ensurePdfLayer(pageEl: Element | null): HTMLElement | null {
 
 export function getActivePdfView(plugin: ArticleAnnotator) : FileView | null {
     const leaves = plugin.app.workspace.getLeavesOfType("pdf");
-    const activeLeaf = plugin.app.workspace.activeLeaf;
-    const activeView = activeLeaf?.view;
-    if (activeView instanceof FileView && activeView.file?.extension === "pdf")
+    const activeView = plugin.app.workspace.getActiveViewOfType(FileView);
+    if (activeView?.file?.extension === "pdf")
       return activeView;
     const matching = leaves.find((leaf) => leaf.view instanceof FileView && leaf.view.file?.path === plugin.activeFile?.path);
     return matching?.view instanceof FileView ? matching.view : null;
@@ -73,7 +71,7 @@ export function getPdfPageSelector(plugin: ArticleAnnotator, page: number) {
 
 export function clearPdfRenderTimers(plugin: ArticleAnnotator) {
     for (const timer of plugin.pdfRenderTimers.values()) {
-      clearTimeout(timer);
+      window.clearTimeout(timer);
     }
     plugin.pdfRenderTimers.clear();
   }
@@ -83,8 +81,8 @@ export function schedulePdfRender(plugin: ArticleAnnotator, filePath: string | u
       return;
     const existing = plugin.pdfRenderTimers.get(filePath);
     if (existing)
-      clearTimeout(existing);
-    const timer = setTimeout(() => {
+      window.clearTimeout(existing);
+    const timer = window.setTimeout(() => {
       plugin.pdfRenderTimers.delete(filePath);
       plugin.renderPdfHighlights(filePath);
     }, delay);
@@ -230,7 +228,7 @@ export async function addNoteToPdfSelection(plugin: ArticleAnnotator, selection:
 
 export function clearPdfHighlightLayers(plugin: ArticleAnnotator, filePath: string | null = null) {
     const root = plugin.app.workspace.containerEl;
-    if (!(root instanceof HTMLElement))
+    if (!(root.instanceOf(HTMLElement)))
       return;
     root.querySelectorAll(".aa-pdf-highlight-layer").forEach((layer) => {
       const owner = layer.getAttribute("data-file-path");
@@ -253,7 +251,7 @@ export function renderPdfHighlights(plugin: ArticleAnnotator, filePath = plugin.
       return;
     const annotations = plugin.getAnnotationsForFile(filePath).filter((ann): ann is Annotation & { position: PdfPosition } => ann.fileType === "pdf" && isPdfPosition(ann.position));
     pageElements.forEach((pageEl) => {
-      if (!(pageEl instanceof HTMLElement))
+      if (!(pageEl.instanceOf(HTMLElement)))
         return;
       const page = getPdfPageNumber(pageEl);
       const layer = ensurePdfLayer(pageEl);
@@ -300,6 +298,6 @@ export function jumpToPdfAnnotation(plugin: ArticleAnnotator, annotation: Annota
     const marker = pageEl.querySelector(`.aa-pdf-highlight[data-annotation-id="${annotation.id}"]`);
     if (marker instanceof HTMLElement) {
       marker.classList.add("is-active");
-      setTimeout(() => marker.classList.remove("is-active"), 1600);
+      window.setTimeout(() => marker.classList.remove("is-active"), 1600);
     }
   }

@@ -2,6 +2,18 @@
 
 All notable changes to this plugin will be documented in this file.
 
+## [0.4.3] - 2026-10-08
+
+### Changed
+- 按社区审查的 ESLint 规则整改：改用 Obsidian 的 DOM 辅助方法与跨窗口 `instanceOf`、`window` 定时器，补齐浮动 Promise 的 `void`，并收敛不安全类型
+- 设置页改用 `setHeading()` 标题，移除内联样式与 `innerHTML`；PDF 视图改用 `getActiveViewOfType` 替代弃用的 `activeLeaf`
+- `minAppVersion` 提升到 `1.7.2`（匹配所用 API 的最低版本）
+- 新增 ESLint 配置与 `npm run lint`
+
+### Release
+- Tag: `0.4.3`（无 v 前缀）
+- Assets: `main.js`, `manifest.json`, `styles.css`
+
 ## [0.4.2] - 2026-10-08
 
 ### Changed

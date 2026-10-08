@@ -283,7 +283,7 @@ export class AnnotationLibraryView extends ItemView {
         win.open("https://github.com/github-oysl/obsidian-annotation-plugin-src#readme", "_blank");
       });
     });
-    if (evt instanceof MouseEvent && (evt.clientX !== 0 || evt.clientY !== 0))
+    if (evt.instanceOf(MouseEvent) && (evt.clientX !== 0 || evt.clientY !== 0))
       menu.showAtMouseEvent(evt);
     else {
       const rect = anchor.getBoundingClientRect();

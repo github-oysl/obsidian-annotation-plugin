@@ -31,7 +31,7 @@
 ## 仓库与分发
 
 - **源码仓库（本仓库）**：[obsidian-annotation-plugin-src](https://github.com/github-oysl/obsidian-annotation-plugin-src)。包含 TypeScript 源码、样式、构建脚本和发布工作流。
-- **插件分发仓库**：[obsidian-annotation-plugin](https://github.com/github-oysl/obsidian-annotation-plugin)。发布工作流将 `main.js`、`manifest.json` 和 `styles.css` 同步到该仓库并创建 Release。
+- **公开插件仓库**：[obsidian-annotation-plugin](https://github.com/github-oysl/obsidian-annotation-plugin)。发布工作流会把构建产物（`main.js`、`manifest.json`、`styles.css`）连同源码和文档同步到该仓库并创建 Release；社区目录审查与用户安装都使用该仓库。
 
 主分支中的改动不一定已经发布。安装插件时使用分发仓库的 [Releases](https://github.com/github-oysl/obsidian-annotation-plugin/releases)；参与开发时使用本仓库。
 
@@ -152,6 +152,12 @@ npm run build
 
 ```sh
 npm test
+```
+
+按 Obsidian 社区插件审查规则检查代码：
+
+```sh
+npm run lint
 ```
 
 这些测试替代 Obsidian 宿主 API，覆盖插件逻辑；实际主题、移动端软键盘和 PDF 布局仍需在 Obsidian 中验证。

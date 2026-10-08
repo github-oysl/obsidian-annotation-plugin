@@ -1,8 +1,8 @@
 {
   "id": "scholiast",
   "name": "Scholiast",
-  "version": "0.4.2",
-  "minAppVersion": "1.0.0",
+  "version": "0.4.3",
+  "minAppVersion": "1.7.2",
   "description": "Add highlights, notes and tags to Markdown and PDF without editing the source.",
   "author": "Juno",
   "isDesktopOnly": false

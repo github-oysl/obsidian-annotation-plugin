@@ -183,6 +183,7 @@ const LANGUAGES: Record<string, LocaleNode> = {
     "locate": "Locate in source note",
     "moreTags": "More tags…",
     "apply": "Apply",
+    "confirmAction": "Confirm",
     "resetFilters": "Reset",
     "filterOther": "Other",
     "modified": "Modified",
@@ -213,7 +214,7 @@ const LANGUAGES: Record<string, LocaleNode> = {
     "shortcutsHint": "💡 Set shortcuts in Obsidian Settings → Hotkeys",
     "notBound": "not bound",
     "readingModeNotice": "Reading mode shows highlights that still match the text. The note file itself is not modified.",
-    "aboutText": "Scholiast ${version} — Highlight and annotate Markdown and PDF files. Review annotations in the sidebar or across your vault in the annotation library. Annotations do not modify the source files. Sync <strong><code>scholiast/annotations.json</code></strong> with your vault to share annotations across devices.",
+    "aboutText": "Scholiast ${version} — Highlight and annotate Markdown and PDF files. Review annotations in the sidebar or across your vault in the annotation library. Annotations do not modify the source files. Sync scholiast/annotations.json with your vault to share annotations across devices.",
   },
   "colorNames": {
     "#FCD34D": "Warm Yellow",
@@ -422,6 +423,7 @@ const LANGUAGES: Record<string, LocaleNode> = {
     "locate": "在原文中定位",
     "moreTags": "更多标签…",
     "apply": "应用",
+    "confirmAction": "确定",
     "resetFilters": "清空",
     "filterOther": "其他",
     "modified": "修改",
@@ -452,7 +454,7 @@ const LANGUAGES: Record<string, LocaleNode> = {
     "shortcutsHint": "💡 可在 Obsidian 设置 → 快捷键 中为上述命令绑定快捷键",
     "notBound": "未绑定",
     "readingModeNotice": "阅读模式会显示对得上的高亮颜色，不会修改笔记原文。",
-    "aboutText": "笺注 ${version} — 为 Markdown 和 PDF 添加高亮与批注，通过侧边栏查看当前文档，通过批注中心跨文档回顾。批注独立保存，不修改原文；将 <strong><code>scholiast/annotations.json</code></strong> 纳入知识库同步即可在多设备共享批注。",
+    "aboutText": "笺注 ${version} — 为 Markdown 和 PDF 添加高亮与批注，通过侧边栏查看当前文档，通过批注中心跨文档回顾。批注独立保存，不修改原文；将 scholiast/annotations.json 纳入知识库同步即可在多设备共享批注。",
   },
   "colorNames": {
     "#FCD34D": "暖黄",

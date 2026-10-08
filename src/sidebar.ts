@@ -157,7 +157,7 @@ export class AnnotatorSidebarView extends ItemView {
           input.setSelectionRange(cursor, cursor);
       }
     }
-    if (list instanceof HTMLElement)
+    if (list.instanceOf(HTMLElement))
       list.scrollTop = scrollTop;
   }
   renderList() {
@@ -411,12 +411,12 @@ export class AnnotatorSidebarView extends ItemView {
     const groupHeader = groupContainer.createDiv("aa-group-header");
     groupHeader.tabIndex = 0;
     const groupTitle = groupHeader.createDiv("aa-group-title");
-    groupTitle.createEl("span", {
+    groupTitle.createSpan({
       text: group.collapsed ? "▶" : "▼",
       cls: "aa-collapse-icon"
     });
-    groupTitle.createEl("span", { text: group.name });
-    groupHeader.createEl("span", {
+    groupTitle.createSpan({ text: group.name });
+    groupHeader.createSpan({
       text: t("ui.groupCount", this.plugin).replace("${n}", String(groupAnnotations.length)),
       cls: "aa-group-count"
     });
@@ -472,15 +472,17 @@ export class AnnotatorSidebarView extends ItemView {
       if (!(nextTarget instanceof Node) || !groupContainer.contains(nextTarget))
         groupContainer.removeClass("aa-group-drop-target");
     });
-    groupContainer.addEventListener("drop", async (evt) => {
+    groupContainer.addEventListener("drop", (evt) => {
       evt.preventDefault();
       evt.stopPropagation();
       groupContainer.removeClass("aa-group-drop-target");
       const annotationId = evt.dataTransfer?.getData("text/plain");
       if (!annotationId)
         return;
-      await this.plugin.addAnnotationToGroup(annotationId, group.id);
-      this.render();
+      void (async () => {
+        await this.plugin.addAnnotationToGroup(annotationId, group.id);
+        this.render();
+      })();
     });
   }
   renderMissingFiles(list: HTMLElement) {

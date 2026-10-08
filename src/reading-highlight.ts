@@ -27,7 +27,7 @@ function collectText(root: HTMLElement): { text: string; chunks: TextChunk[] } {
   let text = "";
   let current = walker.nextNode();
   while (current) {
-    const node = current instanceof Text ? current : null;
+    const node = current.instanceOf(Text) ? current : null;
     const parent = node?.parentElement;
     if (node && !parent?.closest("pre, code, .math, .aa-reading-highlight")) {
       chunks.push({ node, start: text.length });
@@ -59,13 +59,11 @@ function wrapRange(chunks: readonly TextChunk[], start: number, end: number, ann
     const length = localEnd - localStart;
     if ((target.nodeValue ?? "").length > length)
       target.splitText(length);
-    const doc = node.ownerDocument;
-    const mark = doc.createElement("span");
-    mark.className = "aa-reading-highlight";
+    const mark = createSpan("aa-reading-highlight");
     mark.dataset.annotationId = annotation.id;
     if (annotation.noteContent)
       mark.title = annotation.noteContent;
-    mark.style.setProperty("--aa-accent", annotation.color);
+    mark.setCssProps({ "--aa-accent": annotation.color });
     mark.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();

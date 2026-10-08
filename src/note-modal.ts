@@ -116,7 +116,7 @@ export class NoteModal extends Modal {
         quoteBlock.style.setProperty("--aa-quote-accent", color);
         colorRow.querySelectorAll(".aa-color-swatch").forEach((el) => {
           el.classList.remove("is-selected");
-          if (el instanceof HTMLButtonElement)
+          if (el.instanceOf(HTMLButtonElement))
             el.setAttr("aria-pressed", "false");
         });
         swatch.addClass("is-selected");
@@ -258,7 +258,7 @@ export class NoteModal extends Modal {
     const save = (evt: KeyboardEvent) => {
       if (evt.isComposing)
         return;
-      this.requestSave();
+      void this.requestSave();
       return false as const;
     };
     this.registerScopeKey(["Mod"], "Enter", save);
@@ -279,7 +279,7 @@ export class NoteModal extends Modal {
       if (evt.key === "Enter" && (evt.ctrlKey || evt.metaKey)) {
         evt.preventDefault();
         evt.stopPropagation();
-        this.requestSave();
+        void this.requestSave();
       }
     }, true);
   }

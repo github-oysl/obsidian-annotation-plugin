@@ -12,6 +12,7 @@ import {
   type AnnotationStoreData,
 } from "./annotation-model";
 import { getCodeMirror, refreshHighlights } from "./editor-highlights";
+import { confirmDialog } from "./confirm";
 import { t } from "./i18n";
 import type ArticleAnnotator from "./main";
 import type { Annotation, AnnotationDraft, AnnotatorSettings, HighlightGroup } from "./types";
@@ -44,7 +45,7 @@ export async function readAnnotationStoreFile(plugin: ArticleAnnotator, filePath
     }
     try {
       const raw = await adapter.read(filePath);
-      return JSON.parse(raw);
+      return JSON.parse(raw) as AnnotationStoreData;
     } catch (error) {
       console.error(`Scholiast: failed to read annotation store: ${filePath}`, error);
       new Notice(t("notifications.syncedStoreReadFailed", plugin));
@@ -93,8 +94,8 @@ export async function writeAnnotationStore(plugin: ArticleAnnotator, data: Annot
     await adapter.write(plugin.getAnnotationStorePath(), JSON.stringify(data, null, 2));
   }
 
-export async function readLegacyPluginData(plugin: ArticleAnnotator) {
-    const legacy = await plugin.loadData();
+export async function readLegacyPluginData(plugin: ArticleAnnotator): Promise<AnnotationStoreData | null> {
+    const legacy = (await plugin.loadData()) as AnnotationStoreData | null;
     return legacy && typeof legacy === "object" ? legacy : null;
   }
 
@@ -106,12 +107,12 @@ export async function writeLegacyPluginData(plugin: ArticleAnnotator, data: obje
     });
   }
 
-export async function migrateLegacyPluginData(plugin: ArticleAnnotator, settingsFallback: AnnotatorSettings | null = null) {
+export async function migrateLegacyPluginData(plugin: ArticleAnnotator, settingsFallback: AnnotatorSettings | null = null): Promise<AnnotatorSettings | null> {
     const legacy = await plugin.readLegacyPluginData();
     if (!legacy)
       return settingsFallback || null;
-    const migratedAnnotations = Array.isArray(legacy.annotations) ? legacy.annotations : [];
-    const migratedGroups = Array.isArray(legacy.groups) ? legacy.groups : [];
+    const migratedAnnotations = Array.isArray(legacy.annotations) ? legacy.annotations as AnnotationDraft[] : [];
+    const migratedGroups = Array.isArray(legacy.groups) ? legacy.groups as HighlightGroup[] : [];
     if (migratedAnnotations.length > 0 || migratedGroups.length > 0) {
       await plugin.writeAnnotationStore({
         annotations: migratedAnnotations,
@@ -330,7 +331,7 @@ export async function clearFileAnnotations(plugin: ArticleAnnotator) {
       return;
     }
     const msg = t("notifications.clearFileConfirm", plugin).replace("${n}", String(count));
-    if (!confirm(msg))
+    if (!await confirmDialog(plugin.app, msg, plugin))
       return;
     const activePath = plugin.activeFile.path;
     const activeType = getFileType(plugin.activeFile);

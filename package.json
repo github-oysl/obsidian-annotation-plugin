@@ -1,11 +1,12 @@
 {
   "name": "scholiast",
-  "version": "0.4.2",
-  "description": "Highlight text and add annotations like Microsoft Word comments.",
+  "version": "0.4.3",
+  "description": "Add highlights, notes and tags to Markdown and PDF without editing the source.",
   "main": "main.js",
   "type": "module",
   "scripts": {
     "test": "node --test tests/ux.test.mjs",
+    "lint": "eslint src/",
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
   },
@@ -14,9 +15,14 @@
     "@codemirror/commands": "6.5.0",
     "@codemirror/state": "6.5.0",
     "@codemirror/view": "6.38.6",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^2.1.1",
     "@types/node": "^22.15.17",
     "esbuild": "0.25.5",
+    "eslint": "^10.12.0",
+    "eslint-plugin-obsidianmd": "^0.4.2",
     "obsidian": "latest",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.71.1"
   }
 }

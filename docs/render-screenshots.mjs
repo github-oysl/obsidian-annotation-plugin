@@ -350,15 +350,14 @@ const settingItem = (name, desc, control) =>
   `<div class="setting-item"><div class="setting-item-info"><div class="setting-item-name">${name}</div><div class="setting-item-description">${desc}</div></div><div class="setting-item-control">${control}</div></div>`;
 const dropdown = (label) => `<div class="ob-dropdown"><span>${label}</span>${icon('chevronDown', 14)}</div>`;
 const colorRow = (hex, name) =>
-  `<div class="aa-color-row"><span style="display:inline-block;width:24px;height:24px;background:${hex};border-radius:4px;border:1px solid var(--background-modifier-border);"></span>` +
+  `<div class="aa-color-row"><span class="aa-color-preview" style="--aa-color:${hex}"></span>` +
   `<input type="text" value="${hex}" maxlength="7">` +
-  `<span style="font-size:12px;color:var(--text-muted);">${name}</span></div>`;
+  `<span class="aa-color-name">${name}</span></div>`;
 
 const sceneSettings = `
 <div class="shot" id="shot-settings">
   <div class="panel-frame">
     <div class="settings-wrap">
-      <h2>笺注 · 关于</h2>
       <p>把光标放在标题或句子上，或先选中文字，再高亮或批注</p>
       <hr>
       ${settingItem('默认高亮颜色', '高亮时默认使用的颜色', dropdown('● 蔚蓝'))}
@@ -370,13 +369,13 @@ const sceneSettings = `
         ${colorRow('#34D399', '翠绿')}
         ${colorRow('#60A5FA', '蔚蓝')}
         ${colorRow('#8B5CF6', '紫色')}
-        <div class="aa-color-row" style="border-top:1px dashed var(--background-modifier-border);padding-top:8px;">
-          <span style="display:inline-block;width:24px;height:24px;background:#F472B6;border-radius:4px;border:1px solid var(--background-modifier-border);"></span>
+        <div class="aa-color-row is-custom">
+          <span class="aa-color-preview" style="--aa-color:#F472B6"></span>
           <input type="text" value="#F472B6" maxlength="7">
-          <span style="font-size:12px;color:var(--text-muted);">自定义</span>
+          <span class="aa-color-name">自定义</span>
         </div>
-        <div class="aa-color-row" style="padding:4px 0 8px 32px;">
-          <span style="font-size:11px;color:var(--text-muted);min-width:80px;">自定义颜色名称</span>
+        <div class="aa-color-row is-custom-name">
+          <span class="aa-color-name is-small">自定义颜色名称</span>
           <input type="text" value="标记粉" maxlength="12" style="width:120px;font-size:12px;">
         </div>
       </div>
@@ -389,9 +388,9 @@ const sceneSettings = `
         <p class="aa-shortcut-hint">💡 可在 Obsidian 设置 → 快捷键 中为上述命令绑定快捷键</p>
       </div>
       <hr>
-      <div style="padding:10px 12px;margin:8px 0;border-radius:8px;background:var(--background-secondary);color:var(--text-muted);font-size:12px;line-height:1.6;border:1px solid var(--background-modifier-border);">阅读模式会显示对得上的高亮颜色，不会修改笔记原文。</div>
+      <div class="aa-reading-mode-notice">阅读模式会显示对得上的高亮颜色，不会修改笔记原文。</div>
       <h3>关于</h3>
-      <p>笺注 0.4.1 — 为 Markdown 和 PDF 添加高亮与批注，通过侧边栏查看当前文档，通过批注中心跨文档回顾。批注独立保存，不修改原文；将 <strong><code>scholiast/annotations.json</code></strong> 纳入知识库同步即可在多设备共享批注。</p>
+      <p>笺注 0.4.3 — 为 Markdown 和 PDF 添加高亮与批注，通过侧边栏查看当前文档，通过批注中心跨文档回顾。批注独立保存，不修改原文；将 scholiast/annotations.json 纳入知识库同步即可在多设备共享批注。</p>
     </div>
   </div>
 </div>`;
