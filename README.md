@@ -33,7 +33,7 @@
 - **源码仓库（本仓库）**：[obsidian-annotation-plugin-src](https://github.com/github-oysl/obsidian-annotation-plugin-src)。包含 TypeScript 源码、样式、构建脚本和发布工作流。
 - **公开插件仓库**：[obsidian-annotation-plugin](https://github.com/github-oysl/obsidian-annotation-plugin)。发布工作流会把构建产物（`main.js`、`manifest.json`、`styles.css`）同步到该仓库并创建 Release，用户从这里下载安装。源码只保留在本仓库。
 
-主分支中的改动不一定已经发布。安装插件时使用分发仓库的 [Releases](https://github.com/github-oysl/obsidian-annotation-plugin/releases)；参与开发时使用本仓库。
+主分支中的改动不一定已经发布。安装请用下面的 BRAT 或手动方式；参与开发时使用本仓库。
 
 ## 当前能力
 
@@ -53,7 +53,17 @@
 
 ## 安装
 
-1. 从 [分发仓库的 Release](https://github.com/github-oysl/obsidian-annotation-plugin/releases) 下载 `main.js`、`manifest.json`、`styles.css`。
+本插件未上架 Obsidian 官方社区目录（公开仓库只分发构建产物、不含源码），请用以下任一方式安装。
+
+### 方式一：BRAT（推荐，可自动更新）
+
+1. 在 Obsidian 中安装并启用 **Obsidian42 - BRAT**（官方目录里可搜到）。
+2. 打开 BRAT 设置，选择 **Add Beta plugin**，填入本插件的公开仓库：`github-oysl/obsidian-annotation-plugin`。
+3. BRAT 会从该仓库的 Release 拉取 `main.js`、`manifest.json`、`styles.css` 并加载插件；之后可在 BRAT 面板中检查更新。
+
+### 方式二：手动安装
+
+1. 从 [公开仓库的 Releases](https://github.com/github-oysl/obsidian-annotation-plugin/releases) 下载 `main.js`、`manifest.json`、`styles.css`。
 2. 在知识库配置目录下创建 `plugins/scholiast/`。默认路径为 `.obsidian/plugins/scholiast/`；使用自定义配置目录时，以实际配置目录为准。
 3. 将三个文件放入该目录。
 4. 在 Obsidian 的社区插件设置中启用 **Scholiast**；必要时重新加载 Obsidian。
@@ -205,7 +215,7 @@ Scholiast adds highlights, notes and tags to Markdown and PDF files in Obsidian 
 
 The screenshots above show the default light theme in Chinese: the floating color palette in the editor, the note composer, the current-file sidebar, the cross-vault annotation library, and the settings page. The plugin follows your Obsidian theme and language.
 
-Install `main.js`, `manifest.json` and `styles.css` from the [distribution releases](https://github.com/github-oysl/obsidian-annotation-plugin/releases) into your vault's `plugins/scholiast/` configuration directory. This repository contains the source code; the distribution repository contains release artifacts.
+Install with [BRAT](https://github.com/TfTHacker/obsidian42-brat) by adding the public repository `github-oysl/obsidian-annotation-plugin` as a beta plugin, or manually place `main.js`, `manifest.json` and `styles.css` from the [releases](https://github.com/github-oysl/obsidian-annotation-plugin/releases) into your vault's `plugins/scholiast/` directory. The plugin is not listed in the official community directory; the public repository distributes release artifacts only, while the source lives in the private source repository.
 
 Save with the button or Ctrl/Cmd+Enter. Clicking outside saves changed drafts, including color-only edits and cleared notes. Cancel or Esc discards changes. Failed saves keep the draft open. Tab moves focus normally; arrow keys select colors within the palette.
 
