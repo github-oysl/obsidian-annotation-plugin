@@ -80,7 +80,7 @@
   color: var(--text-normal);
 }
 
-.workspace-leaf-content[data-type="marginalia-sidebar"] > .view-header {
+.workspace-leaf-content[data-type="scholiast-sidebar"] > .view-header {
   display: none;
 }
 
