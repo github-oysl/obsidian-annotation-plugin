@@ -2413,3 +2413,136 @@ button.aa-color-swatch {
   line-height: 1.6;
   border: 1px solid var(--background-modifier-border);
 }
+/* Multi-format reader. Layout follows the owning Obsidian view. */
+.aa-ebook { display: flex; flex-direction: column; height: 100%; gap: var(--size-4-2); container-type: inline-size; }
+.aa-ebook-controls { display: flex; gap: var(--size-4-2); align-items: center; min-width: 0; padding-bottom: var(--size-4-2); border-bottom: 1px solid var(--background-modifier-border); }
+.aa-ebook-navigation, .aa-ebook-tools, .aa-ebook-font-controls { display: flex; align-items: center; gap: var(--size-4-1); }
+.aa-ebook-tools { margin-inline-start: auto; }
+.aa-ebook button.aa-ebook-tool, .aa-ebook-display summary { display: inline-flex; align-items: center; justify-content: center; gap: var(--size-4-1); width: 30px; height: 30px; padding: 0; border: 0; box-shadow: none; color: var(--text-muted); background: transparent; border-radius: var(--radius-s); cursor: pointer; }
+.aa-ebook .aa-ebook-tool:hover, .aa-ebook-display summary:hover { color: var(--text-normal); background: var(--background-modifier-hover); }
+.aa-ebook .aa-ebook-tool[aria-pressed="true"] { color: var(--interactive-accent); background: color-mix(in srgb, var(--interactive-accent) 12%, transparent); }
+.aa-ebook .aa-ebook-tool svg, .aa-ebook-display summary svg { width: 16px; height: 16px; }
+.aa-ebook .aa-ebook-toc { min-width: 0; max-width: 180px; flex: 1; border: 0; box-shadow: none; background-color: transparent; font-size: var(--font-ui-small); }
+.aa-ebook-display { position: relative; }
+.aa-ebook-display summary { list-style: none; }
+.aa-ebook-display summary::-webkit-details-marker { display: none; }
+.aa-ebook-display-popover { position: absolute; z-index: 20; top: calc(100% + var(--size-4-2)); inset-inline-end: 0; display: flex; flex-direction: column; gap: var(--size-4-2); width: 180px; padding: var(--size-4-3); border: 1px solid var(--background-modifier-border); border-radius: var(--radius-m); box-shadow: var(--shadow-s); background: var(--background-primary); color: var(--text-normal); }
+.aa-ebook-font-controls { justify-content: space-between; font-size: var(--font-ui-small); }
+.aa-ebook-annotation-tools { display: flex; align-items: center; gap: var(--size-4-2); flex-wrap: wrap; }
+.aa-ebook-tool-label { font-size: var(--font-ui-smaller); color: var(--text-muted); margin-inline-end: var(--size-4-1); }
+.aa-ebook button.aa-ebook-color { width: 20px; height: 20px; min-height: 20px; padding: 0; border-radius: 50%; background: var(--aa-accent); box-shadow: none; }
+.aa-ebook button.aa-ebook-note-action { width: auto; padding-inline: var(--size-4-2); margin-inline-start: var(--size-4-1); font-size: var(--font-ui-small); color: var(--text-normal); }
+.aa-ebook-search { display: flex; gap: var(--size-4-2); align-items: center; }
+.aa-ebook-search input { flex: 1; min-width: 0; }
+.aa-ebook-body { position: relative; display: flex; flex: 1; min-height: 0; gap: var(--size-4-2); }
+.aa-ebook-frame { flex: 1; width: 100%; height: 100%; border: 1px solid var(--background-modifier-border); border-radius: var(--radius-m); min-width: 0; background: var(--background-primary); }
+.aa-ebook-notes { width: 30%; min-width: 220px; overflow: auto; padding: var(--size-4-2); background: var(--background-secondary); border-radius: var(--radius-m); }
+.aa-ebook .is-hidden { display: none; }
+.aa-ebook-results { max-height: 20%; overflow: auto; }
+.aa-ebook-results:empty { display: none; }
+.aa-ebook-results button { display: block; width: 100%; text-align: start; }
+.aa-ebook-status { color: var(--text-muted); }
+.aa-ebook button:focus-visible, .aa-ebook select:focus-visible, .aa-ebook summary:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 2px; }
+@container (max-width: 680px) {
+  .aa-ebook-body { flex-direction: column; }
+  .aa-ebook-notes { width: auto; min-width: 0; max-height: 28%; }
+  .aa-ebook-toc { max-width: none; }
+}
+@media (pointer: coarse) {
+  .aa-ebook button.aa-ebook-tool, .aa-ebook-display summary { width: 44px; height: 44px; }
+  .aa-ebook button.aa-ebook-color { width: 44px; height: 44px; background: transparent; }
+  .aa-ebook button.aa-ebook-color::after { content: ""; display: block; margin: auto; width: 24px; height: 24px; border-radius: 50%; background: var(--aa-accent); pointer-events: none; }
+}
+
+/* 阅读 iframe 与宿主共用的键盘圈选样式；位置由当前页几何计算。 */
+.aa-pdf-region-mode { cursor: crosshair; user-select: none; }
+
+.scholiast-keyboard-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+.scholiast-keyboard-overlay .scholiast-keyboard-label {
+  position: absolute;
+  background: var(--interactive-accent, #42658b);
+  color: var(--text-on-accent, white);
+  font: 700 12px/18px var(--font-interface-theme, system-ui);
+  border: 1px solid var(--background-modifier-border, #aaa);
+  border-radius: var(--radius-s, 3px);
+  padding: 0 3px;
+  white-space: nowrap;
+}
+.scholiast-keyboard-status {
+  position: fixed;
+  bottom: var(--size-4-2, 8px);
+  left: var(--size-4-2, 8px);
+  right: var(--size-4-2, 8px);
+  z-index: 1001;
+  background: var(--background-secondary, #f5f7fc);
+  color: var(--text-normal, #263b57);
+  border: 1px solid var(--background-modifier-border, #aaa);
+  border-radius: var(--radius-s, 3px);
+  padding: var(--size-4-2, 8px);
+  font: var(--font-ui-small, 13px)/1.4 var(--font-interface-theme, system-ui);
+  pointer-events: none;
+}
+.scholiast-keyboard-status:empty { display: none; }
+
+/* 三处阅读卡片共用摘录与想法层级，浅色和深色均从主题取色。 */
+.aa-reading-card .aa-card-source {
+  padding: var(--size-4-2);
+  border-radius: var(--radius-s);
+  background: var(--background-secondary);
+}
+
+.aa-reading-card .aa-card-section-label {
+  margin-bottom: var(--size-2-2);
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-weight: var(--font-semibold);
+  line-height: 1.4;
+}
+
+.aa-reading-card:not(.has-title) .aa-card-source .aa-card-section-label {
+  padding-right: calc(var(--size-4-4) * 3);
+}
+
+.aa-reading-card .aa-card-source .aa-card-text {
+  display: block;
+  margin: 0;
+  padding: 0 0 0 var(--size-4-2);
+  border: none;
+  border-left: 2px solid var(--aa-accent, var(--interactive-accent));
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  font-style: normal;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.aa-reading-card .aa-card-text.is-collapsible:not(.is-expanded) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.aa-reading-card .aa-card-thought {
+  margin-top: var(--size-4-3);
+  padding: 0 var(--size-4-2);
+}
+
+.aa-reading-card .aa-card-thought .aa-card-note {
+  margin: 0;
+  padding: 0;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

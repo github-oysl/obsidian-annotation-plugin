@@ -1,9 +1,9 @@
 {
   "id": "scholiast",
   "name": "Scholiast",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "minAppVersion": "1.13.0",
-  "description": "Add highlights, notes and tags to Markdown and PDF without editing the source.",
+  "description": "Read and annotate Markdown, PDF and ebooks with highlights, notes and tags without editing the source.",
   "author": "Juno",
   "isDesktopOnly": false
 }
