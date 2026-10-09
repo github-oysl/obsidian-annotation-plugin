@@ -1490,6 +1490,15 @@ button.aa-color-swatch {
   margin: 8px 0;
 }
 
+/* 声明式设置里自定义渲染的整行块：去掉默认的两列布局，让内容占满整行。 */
+.aa-settings-block {
+  display: block;
+}
+
+.aa-settings-block > * {
+  width: 100%;
+}
+
 .aa-color-row {
   display: flex;
   align-items: center;
