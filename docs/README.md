@@ -128,6 +128,6 @@ npm run build
 - [分发仓库](https://github.com/github-oysl/obsidian-annotation-plugin)：构建产物与 Release。开发工作树可能领先于正式版本。
 - [.github/workflows/release.yml](https://github.com/github-oysl/obsidian-annotation-plugin-src/blob/main/.github/workflows/release.yml)：推送与 manifest 版本一致的纯版本号 tag 后，构建并验证，将三个运行文件、版本兼容映射、完整中英手册、配图与开发说明同步到分发仓库，再创建/更新 Release。普通分支推送不触发正式发布。
 
-发布前同步版本号、完成验证并更新中英文指南。工作流所需 `RELEASE_TOKEN` 由维护者在仓库 secrets 中配置；不要写入源码。0.6.0 是此次电子书与完整图文手册的发布版本。
+发布前同步版本号、完成验证并更新中英文指南。工作流所需 `RELEASE_TOKEN` 由维护者在仓库 secrets 中配置；不要写入源码。本轮版本为 0.7.0，包含阅读与批注操作优化、单句段落直接选中和 slouyang 署名修正，见 [版本说明](releases/0.7.0.md)。
 
 许可证：[MIT](../LICENSE)。第三方引擎许可证见 vendor 目录。

@@ -6,7 +6,7 @@ Read, highlight and write notes on Markdown, PDF and ebooks in Obsidian. Annotat
 
 [English guide](#english-guide) · [中文使用指南](#中文使用指南) · [源码与开发说明](docs/README.md)
 
-> Complete user manual for **0.6.0**. Minimum Obsidian version: **1.13.0**. / **0.6.0 完整使用手册**，最低 Obsidian 版本：**1.13.0**。
+> Complete user manual for **0.7.0**. Minimum Obsidian version: **1.13.0**. / **0.7.0 完整使用手册**，最低 Obsidian 版本：**1.13.0**。
 
 ## English guide
 
@@ -88,7 +88,7 @@ The ebook toolbar provides previous/next page, table of contents, search, annota
 
 Select text in Markdown or the ebook reader. Choose a color in the floating palette or reader toolbar to save a highlight, or choose the pencil action to write a note. For PDF, select text within one page and use the context menu. The PDF page menu also offers page/region annotation; region mode lets you drag a rectangle over a scanned page.
 
-The editor keeps the source excerpt above your own note. Add tags and choose a color before saving.
+The editor keeps the source excerpt above your own note. Add tags and choose a color before saving. While typing, **Tab / Shift+Tab** cycles colors without changing the cursor or text selection. **F6** or the navigation button switches to standard Tab control navigation. Color cycling can be disabled in settings. Successful saves remember the color for the current document.
 
 ![Annotation editor with source text, a note, tags, colors and save/cancel actions](docs/screenshots/note-editor.png)
 
@@ -106,12 +106,14 @@ Clearing an existing note keeps its highlight. Selecting an already annotated eb
 This feature is **off by default**. Enable it in **Settings → Scholiast**, then choose the activation key (`Space`, backquote or `F8`) and hold duration. The initial configuration is **Space / 180 ms**.
 
 1. Click inside the ebook text, then hold the activation key until paragraph labels appear.
-2. Type the label beside a paragraph, then the label beside the starting sentence. Dense paragraphs first show sentence groups.
+2. Type the label beside a paragraph. A single-sentence paragraph is selected immediately; otherwise, type the starting sentence label. Dense paragraphs first show sentence groups.
 3. Release the activation key. Press **Left/Right** to shrink or extend the range one sentence at a time; the reader follows the endpoint across pages in the same chapter. You can also hold the activation key again and choose an endpoint label.
 4. Press **Enter** to open the note editor. Save to create the annotation. Releasing Space alone never saves.
 5. Use **Esc** to cancel a selection; **Backspace** goes back through label levels while choosing. Cross-chapter range operations pause; return to the starting chapter to continue, or press Esc to cancel.
 
 Without a selected start, Left/Right turns pages. Short presses on an enabled activation key suppress its normal reading action. Cross-chapter selection is not supported.
+
+To delete ebook annotations, bind **Delete annotation (cursor / selected / visible page)** in Hotkeys. An explicitly selected annotation or exact annotated text range takes priority. Otherwise, one visible annotation is deleted directly; multiple visible annotations receive letter labels. Type a label to delete, or press Esc to cancel. A text range without an exact match is retained. Keyboard deletion works even with keyboard selection disabled; annotation undo restores a deletion.
 
 ### Review, organize and return to the source
 
@@ -126,7 +128,7 @@ The card menu can copy source text, copy a precise Obsidian link, change color, 
 
 ### Use the current-document panel
 
-The pen ribbon icon opens the panel; **Toggle annotation panel** shows/hides it. It follows the active supported document. The ebook reader also has an internal panel toggle; on narrow windows that panel appears below the book.
+The pen ribbon icon opens the panel; **Toggle annotation panel** shows/hides it. The ebook toolbar controls the same panel: a sidebar in wide windows, a drawer in narrow or separate windows. It follows the active supported document. Visibility is remembered per document; an ordinary save keeps a closed panel closed.
 
 - **All / Notes / Highlights:** Notes have nonempty thought text; a highlight has none, even if it has tags.
 - **Search:** matches excerpts, thoughts and tags, ignoring case.
@@ -159,34 +161,32 @@ Use left navigation to choose a file/folder, tag, color or time range (**Any tim
 
 The toolbar switches list/grid presentation and sorting; the header menu switches compact/comfortable spacing. Select a card for its excerpt, thoughts, tags, location, timestamps and available source context. Locate returns to the document; the pencil edits. Resize details by dragging the divider, or focus it and use arrow keys. Narrow screens show details in place of the list; **Back to annotations** restores the list.
 
-The header menu also exports everything and opens the current panel, settings or help. **Batch manage** opens the current-document panel; choose **Multi-select** in that panel's menu next. It does not bulk-delete across the vault. **Search all annotations** opens quick search: type a query, select with Up/Down and press Enter to locate.
+The header menu also exports everything and opens the current panel, settings or help. **Batch manage** selects records from the current filtered results for color changes, adding tags or exporting. Select all applies to those results; changing filters clears selection. Batch changes save together and can be undone as one operation. Groups remain limited to one document. **Search all annotations** opens quick search: type a query, select with Up/Down and press Enter to locate.
 
 ### Export and create notes
 
 | Action | Entry | Result |
 | --- | --- | --- |
-| Export current document | Panel menu / **Export current file annotations** | Beside the source: **Book-annotations-export.md** in English, **Book-批注导出.md** in Chinese |
-| Export all annotations | Library header menu | **scholiast-export.md** in the vault root, grouped by source |
-| Turn one record into a note | Card menu → **Turn into note** | Separate Markdown note beside the source, named from the excerpt; numbered suffix for an existing name |
+| Export current document | Panel menu / **Export current file annotations** | New timestamped snapshot in the configured folder, initially **Learning/Notes** |
+| Export all annotations | Library header menu | New snapshot in that folder, grouped by source |
+| Export selected annotations | Library batch toolbar | New snapshot containing only selected records |
+| Turn one record into a note | Card menu → **Turn into note** | Separate note beside the source, named from the excerpt; name collisions get a numbered suffix |
 | Copy exact link | Card menu → **Copy Obsidian link** | An **obsidian://scholiast** link to the document and annotation |
-| Copy text | Card menu → **Copy quote / Copy note** | Excerpt or thoughts on your clipboard |
+| Copy text | Card menu → **Copy quote / Copy note** | Excerpt or thoughts on the clipboard |
 
-Exports contain excerpts, thoughts, source links and locations. They include the current document/full collection, **not only visible filtered cards**. Exporting again replaces the same export file: rename/move edited exports first. Separate notes contain excerpt, thoughts and a source wikilink; creating one retains the annotation.
+Exports contain excerpts, thoughts, tags, colors, locations, source links and exact return links, sorted by position within each source. Document/full-library exports include that whole scope; batch export includes only selected records. Each export creates a new file and preserves existing files. Separate notes also include an exact return link and retain the annotation.
 
-Exports and separate notes are snapshots. Editing them does not change the annotation; later annotation edits do not update old snapshots. Annotation tags are plugin metadata; use Markdown tags in a separate note for native tag workflows.
-
-Exact links require the correct vault, existing source and enabled plugin. They locate the annotation when its position verifies. Copy/link/export actions do not upload a shared web copy.
+Exports and notes are snapshots, without two-way synchronization. Annotation tags are plugin metadata; add normal Markdown tags to a separate note for native tag workflows. Exact links require the correct vault, existing source and enabled plugin. These actions do not upload a shared web copy.
 
 ### Configure undo and language
 
-No command has a default hotkey. In **Settings → Hotkeys**, search for **Scholiast: 撤销（Markdown / 电子书）** and bind it to your preferred shortcut. You can use a consistent prefix for related reading actions.
+In **Settings → Hotkeys**, bind **Scholiast: Undo last annotation operation** to your preferred shortcut. Existing bindings to the prior undo command continue to work.
 
-- In Markdown, the unified undo uses the editor's undo history, including text edits.
-- In an ebook, it removes the current document's latest annotation created during this plugin session. Editing an older note is not a new creation; the creation history resets when the plugin restarts.
-- The plugin does not intercept `Ctrl/Cmd+Z` to implement ebook undo. PDF annotation undo is not included in this command.
+- Annotation undo restores creation, deletion, notes, colors, tags and groups in Markdown, PDF and ebooks. It follows the current document; a batch involving several documents is restored together.
+- History lasts for the current plugin session. Conflicts or failed saves retain the entry for retry; missing old groups restore annotations without a group.
+- Normal text undo with Ctrl/Cmd+Z keeps the editor's behavior.
 
-Choose 中文 or English in plugin settings. Annotation cards, editors and the existing Markdown management interface follow that choice; some reading commands and reader controls currently retain Chinese labels.
-
+Choose 中文 or English in settings. Cards and editors follow that choice; some reading controls retain Chinese labels.
 
 ### Command reference
 
@@ -198,11 +198,12 @@ Search **Scholiast** in the command palette. Editor/cursor commands require that
 | Open annotation library | Review across the vault |
 | Highlight current selection (default color) | Markdown selection or inferred cursor range |
 | Add note to current selection | Open a Markdown draft |
-| Locate / Edit / Delete annotation at cursor | Work on the Markdown annotation containing the cursor |
+| Locate / Edit annotation at cursor | Work on the Markdown annotation containing the cursor |
+| Delete annotation (cursor / selected / visible page) | Delete the selected or cursor annotation; ebooks also offer visible-page labels |
 | Search all annotations | Search excerpts, thoughts and tags; locate a result |
 | Export current file annotations | Write a Markdown snapshot |
 | Clear current file annotations | Delete that document's records after confirmation |
-| 撤销（Markdown / 电子书） | Unified undo, with the limits above |
+| Undo last annotation operation | Restore the current document's latest annotation operation |
 | 阅读当前学习文档 | Open the active supported document |
 | 导入学习文档 | Copy external files into the vault |
 | 最近阅读 | Choose a previously opened source and resume |
@@ -217,6 +218,9 @@ No command has a default shortcut. In **Settings → Hotkeys**, choose consisten
 | --- | --- |
 | Default highlight color | Color for the default-color Markdown command |
 | Language | 中文 / English; some reading controls remain Chinese |
+| Input Tab color switching | On initially; Tab/Shift+Tab changes colors, F6 switches control navigation |
+| Default font size / reading layout | Initially 100% / paginated; document overrides are remembered |
+| Annotation export folder | Vault-relative folder for new snapshots, initially **Learning/Notes** |
 | Enable keyboard selection | Off initially; enables ebook labels/sentence selection |
 | Activation key | Space / backquote / F8; initially Space |
 | Hold duration | 120–800 ms, 20 ms steps; initially 180 ms |
@@ -225,7 +229,7 @@ No command has a default shortcut. In **Settings → Hotkeys**, choose consisten
 | Custom color name | Name for the extra color, up to 12 characters |
 | Shortcuts | Shows bindings; change them in Obsidian Hotkeys |
 
-Palette changes do not recolor existing records automatically. Edit an individual card for that. Font size and paginated/continuous layout belong to the reader's display controls. Reading position and the reader's panel visibility are remembered per document.
+Palette changes do not recolor existing records automatically. Edit a card or use batch colors. The reader can override default font size and reading layout or restore defaults. Reading position, display overrides and panel visibility are remembered per document.
 
 ### Missing sources and unmatched annotations
 
@@ -257,7 +261,7 @@ On mobile, the quick-actions button provides Markdown highlight/note/panel actio
 
 Disabling/uninstalling removes the plugin interface; original documents remain intact. Keep annotation JSON if you may reinstall. Restore backups with the plugin disabled, keep a copy of current data, then reload and check the library. Sync JSON and original sources together, and avoid editing the same store on two devices at once.
 
-macOS Obsidian EPUB workflows are covered by automated host tests, including creating a note and reopening/restarting. Windows, native IME, mobile and popout-window behavior still need further acceptance testing. Report issues in the [source issue tracker](https://github.com/github-oysl/obsidian-annotation-plugin-src/issues), including plugin/Obsidian version, OS and reproducible steps.
+macOS Obsidian EPUB workflows are covered by automated host tests, including creating notes, reopening/restarting and separate-window interactions. Windows, native IME and mobile still need further acceptance testing. Report issues in the [source issue tracker](https://github.com/github-oysl/obsidian-annotation-plugin-src/issues), including plugin/Obsidian version, OS and reproducible steps.
 
 ## 中文使用指南
 
@@ -339,7 +343,7 @@ PDF 从选区右键菜单添加；电子书从内置阅读器色板/批注按钮
 
 在 Markdown 或电子书正文中选中文字，通过浮动色板或阅读器色板保存高亮，点击铅笔写想法。PDF 请在同一页的文本层中选文并使用右键菜单；页面菜单也支持页面与区域批注。区域模式可在扫描页上拖出矩形。
 
-编辑器上方保留原文摘录，下方填写想法，并可添加标签、选择颜色。
+编辑器上方保留原文摘录，下方填写想法，并可添加标签、选择颜色。输入时 **Tab / Shift+Tab** 正向或反向换色，保持光标和文字选区；**F6** 或导航按钮切换标准 Tab 控件导航。可在设置中关闭输入换色，成功保存后记住当前文档最近使用的颜色。
 
 ![批注编辑器：原文摘录、想法输入、标签、颜色、取消与保存](docs/screenshots/note-editor.png)
 
@@ -357,12 +361,14 @@ PDF 从选区右键菜单添加；电子书从内置阅读器色板/批注按钮
 功能**默认关闭**。先在 **设置 → Scholiast** 中启用，并配置激活键（`Space`、反引号或 `F8`）与按住时长，初始值为 **Space / 180 毫秒**。
 
 1. 点击电子书正文，按住激活键，直到出现段落标签。
-2. 输入段落标签，再输入起点句子的标签；句子较多时先选择句组。
+2. 输入段落标签。只有一句的段落会直接选中；多句段落再输入起点句子的标签，句子较多时先选择句组。
 3. 松开激活键后，按**左/右方向键**逐句收缩或扩展范围；同章节跨页时阅读器会跟随终点。也可再次按住激活键，通过标签选择终点。
 4. 按 **Enter** 打开想法编辑器，保存后才创建批注。仅松开 Space 不会保存。
 5. **Esc** 取消圈选；选择标签时 **Backspace** 返回上一级。跨章节范围操作会暂停；返回起点章节继续，或按 Esc 取消。
 
 未选起点时，左右键用于翻页。启用后短按激活键会抑制其原有阅读动作。当前不支持跨章节范围。
+
+电子书删除批注：在快捷键设置中绑定 **删除批注（光标 / 选择 / 可见页）**。优先处理已选择的批注或精确匹配的原文范围；没有明确目标时，可见页一条直接删除，多条显示字母标签，输入标签删除，Esc 取消。范围无精确匹配时保留圈选并提示。该命令不依赖圈选开关，删除后可用批注撤销恢复。
 
 ### 回顾、整理与返回原文
 
@@ -377,7 +383,7 @@ PDF 从选区右键菜单添加；电子书从内置阅读器色板/批注按钮
 
 ### 当前文档侧栏完整用法
 
-左侧笔形图标打开侧栏，**切换批注面板** 可以显示/隐藏；侧栏跟随当前活动的支持文档。电子书阅读器还有内部面板开关，窄窗口下置于正文下方。
+左侧笔形图标打开侧栏，**切换批注面板** 可以显示/隐藏。电子书工具栏控制同一份面板，宽窗口使用侧栏，窄窗口和独立窗口使用抽屉，跟随当前活动文档。面板开关按文档记住，普通保存不会重开已关闭的面板。
 
 - **全部 / 批注 / 仅高亮：**有非空想法才算批注，只有标签而没有想法仍算高亮。
 - **搜索：**匹配原文摘录、想法和标签，英文不区分大小写。
@@ -410,34 +416,32 @@ PDF 从选区右键菜单添加；电子书从内置阅读器色板/批注按钮
 
 顶部切换列表/网格和排序，标题更多菜单可切换紧凑/舒适间距。选卡片后看原文、想法、标签、位置、时间及可获取的原文上下文，定位图标回原文，铅笔编辑。拖动分隔条调整详情宽度，也可聚焦分隔条后用方向键；窄屏详情替代列表，使用返回按钮回列表。
 
-标题菜单还可以导出全部、打开当前文件侧栏、设置和帮助。**批量管理**先打开当前文件侧栏，再从侧栏菜单进入 **多选**，不是全库批量删除。**搜索全部批注**会打开独立快速搜索框：输入关键词，上下键选择，回车定位结果。
+标题菜单还可以导出全部、打开当前文件侧栏、设置和帮助。**批量管理**在当前筛选结果中选择批注，支持改色、合并添加标签和导出；全选仅限该结果集，改变筛选会清空选择。批量修改整体保存，作为一次操作撤销；分组仍限同文档。**搜索全部批注**会打开独立快速搜索框：输入关键词，上下键选择，回车定位结果。
 
 ### 导出、链接与独立笔记
 
 | 操作 | 入口 | 结果 |
 | --- | --- | --- |
-| 导出当前文档 | 侧栏菜单 / **导出当前文件批注** | 原文件旁边的 **书名-批注导出.md**，英文设置下为 **Book-annotations-export.md** |
-| 导出全部 | 批注中心标题菜单 | 知识库根目录 **scholiast-export.md**，按源文件分节 |
-| 单条转笔记 | 卡片菜单 → **转为笔记** | 原文件旁边独立 Markdown，摘录生成文件名，同名自动加序号 |
-| 复制精确链接 | 卡片菜单 → **复制 Obsidian 链接** | 指向文档和该批注的 **obsidian://scholiast** 链接 |
+| 导出当前文档 | 侧栏菜单 / **导出当前文件批注** | 配置目录内带时间的新快照，默认 **Learning/Notes** |
+| 导出全部 | 批注中心标题菜单 | 同一目录内的新快照，按源文件分节 |
+| 导出所选 | 批注中心批量工具栏 | 仅包含所选记录的新快照 |
+| 单条转笔记 | 卡片菜单 → **转为笔记** | 原文件旁独立 Markdown，摘录命名，同名加序号 |
+| 复制精确链接 | 卡片菜单 → **复制 Obsidian 链接** | 指向文档和批注的 **obsidian://scholiast** 链接 |
 | 复制文字 | 卡片菜单 → **复制原文 / 复制批注** | 摘录或想法写入剪贴板 |
 
-导出包含摘录、想法、来源链接与位置，导出当前文档/全部集合，**不局限于筛选后可见卡片**。重复导出覆盖同名导出文件，已经编辑的导出请先改名或移动。转笔记包含摘录、想法、来源双链，不删除原批注。
+导出包含摘录、想法、标签、颜色、位置、来源链接及精确回原文链接，按来源分组并按原文位置排序。当前文档/全库导出包含对应完整范围；批量导出仅包含所选记录。每次创建新文件，同名加序号，保留已有文件。转笔记也包含精确链接，不删除原批注。
 
-导出和独立笔记都是快照，不双向同步：修改快照不会改原批注，之后修改批注也不会更新旧快照。批注标签是插件数据，需要原生标签工作流时，在独立 Markdown 中添加普通标签。
-
-精确链接要求正确的知识库、存在的原文件和已启用的插件，位置可验证时返回对应批注。复制、链接和导出不会上传共享网页副本。
+导出和独立笔记是快照，不双向同步。批注标签是插件数据，需要原生标签时在独立 Markdown 中添加普通标签。精确链接要求正确知识库、存在的原文件和已启用的插件。这些操作不会上传共享网页副本。
 
 ### 统一撤销与语言
 
-插件不预设命令快捷键。在 **设置 → 快捷键** 中搜索 **Scholiast：撤销（Markdown / 电子书）**，按自己的习惯绑定，也可以为相关阅读动作统一前缀。
+在 **设置 → 快捷键** 中绑定 **Scholiast：撤销上次批注操作**，旧撤销命令的已有键位继续有效。
 
-- Markdown 使用原编辑器撤销历史，其中也包含正文编辑。
-- 电子书撤销当前文档在本次插件运行期间最近创建的批注。编辑已有批注不算新建；插件重启后，新建记录的撤销历史会重置。
-- 插件不拦截 `Ctrl/Cmd+Z` 来实现电子书撤销，该命令暂不包括 PDF 批注撤销。
+- 批注撤销覆盖 Markdown、PDF、电子书的新建、删除、想法、颜色、标签及分组，按当前文档找最近操作；跨文档批量操作整体恢复。
+- 历史保留本次插件运行期间。冲突或保存失败保留历史供重试；旧分组缺失时恢复为未分组并提示。
+- 正文和输入框的 Ctrl/Cmd+Z 保持编辑器原有文字撤销行为。
 
-设置中可选择中文或 English。卡片、批注编辑器及既有 Markdown 管理界面跟随语言设置；部分阅读命令和阅读器控件当前仍使用中文。
-
+设置中可选择中文或 English。卡片和批注编辑器跟随语言设置；部分阅读命令和控件仍为中文。
 
 ### 完整命令表
 
@@ -449,11 +453,12 @@ PDF 从选区右键菜单添加；电子书从内置阅读器色板/批注按钮
 | 打开批注中心 | 全知识库回顾 |
 | 高亮当前选中（默认颜色） | Markdown 选区或光标自动范围 |
 | 给当前选中写批注 | 打开 Markdown 草稿 |
-| 定位 / 编辑 / 删除光标处的批注或高亮 | 操作光标所在的 Markdown 批注 |
+| 定位 / 编辑光标处的批注或高亮 | 操作光标所在的 Markdown 批注 |
+| 删除批注（光标 / 选择 / 可见页） | 删除光标处或已选择的批注；电子书支持可见页字母标签 |
 | 搜索全部批注 | 搜索摘录、想法、标签并定位 |
 | 导出当前文件批注 | 创建 Markdown 快照 |
 | 清空当前文件批注 | 确认后删除该文档记录 |
-| 撤销（Markdown / 电子书） | 按上述范围统一撤销 |
+| 撤销上次批注操作 | 恢复当前文档最近的批注操作 |
 | 阅读当前学习文档 | 打开当前支持文档 |
 | 导入学习文档 | 复制外部文件到知识库 |
 | 最近阅读 | 选择此前打开的来源并继续 |
@@ -468,6 +473,9 @@ PDF 从选区右键菜单添加；电子书从内置阅读器色板/批注按钮
 | --- | --- |
 | 默认高亮颜色 | Markdown 默认颜色命令采用的颜色 |
 | 语言 | 中文 / English，部分阅读控件仍为中文 |
+| 输入中 Tab 换色 | 初始启用；Tab/Shift+Tab 换色，F6 切换控件导航 |
+| 默认字号 / 阅读布局 | 初始 100% / 分页阅读，各文档可记住覆盖值 |
+| 批注导出目录 | 新快照使用的知识库相对目录，默认 **Learning/Notes** |
 | 启用键盘圈选 | 初始关闭，启用电子书标签与逐句圈选 |
 | 激活键 | Space / 反引号 / F8，初始 Space |
 | 按住时长 | 120–800 毫秒，步长 20 毫秒，初始 180 毫秒 |
@@ -476,7 +484,7 @@ PDF 从选区右键菜单添加；电子书从内置阅读器色板/批注按钮
 | 自定义颜色名称 | 额外颜色的显示名称，最多 12 字符 |
 | 快捷键 | 查看现有绑定，实际修改在 Obsidian 快捷键设置 |
 
-修改色板不自动改掉已有批注颜色，单条改色请编辑卡片。字号和分页/连续滚动属于阅读器显示控件。阅读位置及阅读器批注面板开关按文档记住。
+修改色板不自动改掉已有批注颜色，可从单条卡片或批量工具改色。阅读器可覆盖默认字号及阅读布局，并可恢复全局默认。阅读位置、显示覆盖值和面板开关按文档记住。
 
 ### 缺失文件与失联位置恢复
 
@@ -508,7 +516,7 @@ PDF 从选区右键菜单添加；电子书从内置阅读器色板/批注按钮
 
 禁用/卸载后插件界面消失，原文保留；计划重装时请保留批注 JSON。恢复备份时先禁用插件、另存当前数据，再恢复文件并重载检查批注中心。同步原文与 JSON 时避免两台设备同时编辑同一存储。
 
-自动宿主测试覆盖 macOS Obsidian 的 EPUB 流程，包括创建批注、关闭重开和进程重启。Windows、原生输入法、移动端和弹出窗口仍需进一步验收。请在[源码问题区](https://github.com/github-oysl/obsidian-annotation-plugin-src/issues)附上插件/Obsidian 版本、系统与复现步骤。
+自动宿主测试覆盖 macOS Obsidian 的 EPUB 流程，包括创建批注、关闭重开、进程重启和独立窗口交互。Windows、原生输入法及移动端仍需进一步验收。请在[源码问题区](https://github.com/github-oysl/obsidian-annotation-plugin-src/issues)附上插件/Obsidian 版本、系统与复现步骤。
 
 ## License / 许可
 

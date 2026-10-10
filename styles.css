@@ -2546,3 +2546,19 @@ button.aa-color-swatch {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* 同一批注面板在侧栏和窄窗口抽屉之间呈现。 */
+.aa-panel-hidden { display: none; }
+.aa-ebook { position: relative; }
+.aa-ebook-drawer { position: absolute; z-index: 12; inset: 0 0 0 auto; width: min(360px, 90%); overflow: auto; background: var(--background-secondary); border-inline-start: 1px solid var(--background-modifier-border); box-shadow: var(--shadow-s); }
+.aa-ebook .aa-ebook-annotation-tools { position: absolute; z-index: 15; left: var(--aa-selection-left, 8px); top: var(--aa-selection-top, 56px); max-width: calc(100% - 16px); padding: var(--size-4-2); border-radius: var(--radius-m); background: var(--background-primary); border: 1px solid var(--background-modifier-border); box-shadow: var(--shadow-s); }
+.aa-ebook-results button.is-selected { background: var(--background-modifier-hover); outline: 1px solid var(--interactive-accent); }
+.aa-note-navigation-mode { color: var(--text-muted); font-size: var(--font-ui-small); }
+.scholiast-delete-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
+.scholiast-delete-label { position: absolute; background: var(--text-error, #c43b3b); color: var(--text-on-accent, white); border-radius: 3px; padding: 2px 5px; font: bold 12px monospace; }
+.scholiast-delete-status { position: fixed; bottom: 8px; inset-inline: 8px; z-index: 51; max-height: 32%; overflow: auto; background: var(--background-secondary); color: var(--text-normal); border: 1px solid var(--background-modifier-border); border-radius: var(--radius-m); padding: 8px; font-size: 12px; }
+.scholiast-delete-status:empty { display: none; }
+.aa-batch-bar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--size-4-2); padding: var(--size-4-2); border-bottom: 1px solid var(--background-modifier-border); }
+.aa-batch-bar input { min-width: 100px; width: 160px; }
+
+.aa-card.is-annotation-selected { outline: 2px solid var(--interactive-accent); outline-offset: -2px; }
