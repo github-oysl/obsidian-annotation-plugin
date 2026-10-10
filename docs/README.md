@@ -110,17 +110,16 @@ npm run build
 
 ## 图文指南维护
 
-[用户指南](../README.md)提供完整英文和中文步骤。当前阅读器、编辑器和双语卡片截图由 `tests/ebook-host.browser.mjs` 在隔离 Obsidian 中生成：
+[用户指南](../README.md)提供完整英文和中文步骤。配图通过 `docs/capture-desktop.mjs` 在真实 macOS 桌面版 Obsidian 中生成，使用隔离 profile、临时知识库与原创 Markdown / EPUB / PDF 样本，不读写个人知识库。英文示例切换插件语言；宿主界面语言独立设置。
 
-```text
-.test-output/guide-reader-light.png     → docs/screenshots/reader-light.png
-.test-output/guide-reader-dark.png      → docs/screenshots/reader-dark.png
-.test-output/guide-note-editor.png      → docs/screenshots/note-editor.png
-.test-output/guide-annotation-zh.png    → docs/screenshots/annotation-zh.png
-.test-output/guide-annotation-en.png    → docs/screenshots/annotation-en.png
+```sh
+npm run build
+node docs/capture-desktop.mjs
 ```
 
-测试通过后，目视检查并复制截图，再检查 README 的本地链接与图片是否存在。使用原创样本，不展示个人路径、私人正文或令牌。旧 `render-screenshots.mjs` 是静态布局辅助脚本，不能代替真实宿主验收。
+脚本需要 macOS 已安装 Obsidian，可通过 `SCHOLIAST_OBSIDIAN` 指定应用可执行文件。它拍摄 12 张实际界面截图：中英文 Markdown 命令面板、编辑器、卡片、批注中心，以及共用的电子书段落标签、逐句扩展、浅色阅读器与 PDF 右键菜单。截图直接写入 `docs/screenshots/`，持久化与页面错误检查报告写入忽略目录 `.test-output/guide-capture-results.json`。
+
+拍摄后逐张目视检查，确认正文与控件清晰、没有启动通知遮挡，再检查 README 的图片链接。`tests/ebook-host.browser.mjs` 继续负责完整宿主回归；旧 `render-screenshots.mjs` 是静态布局辅助脚本，不能代替真实桌面截图。
 
 ## 分发与发布
 
