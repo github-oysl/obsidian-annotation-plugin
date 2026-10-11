@@ -2562,3 +2562,70 @@ button.aa-color-swatch {
 .aa-batch-bar input { min-width: 100px; width: 160px; }
 
 .aa-card.is-annotation-selected { outline: 2px solid var(--interactive-accent); outline-offset: -2px; }
+
+/* 单页阅读保留原生分页几何供懒加载和搜索定位，只呈现当前页。 */
+.pdf-viewer-container.aa-pdf-single-page {
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+.aa-pdf-single-page .pdfViewer .page {
+  --scale-factor: var(--aa-pdf-page-scale, 1);
+  --total-scale-factor: calc(var(--scale-factor) * var(--user-unit, 1));
+  visibility: hidden;
+}
+.aa-pdf-single-page .pdfViewer .page.aa-pdf-current-page {
+  visibility: visible;
+}
+.aa-pdf-single-page .pdfViewer .spread {
+  display: block;
+}
+.aa-pdf-single-page .pdfViewer .spread .page {
+  display: block;
+  margin-inline: auto;
+}
+
+/* PDF 心流临时层与已保存高亮分离，保持原生选文和链接可点击。 */
+.aa-pdf-flow-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+.aa-pdf-flow-layer .aa-pdf-flow-label {
+  position: absolute;
+  transform: translateX(-100%);
+  padding: 2px 5px;
+  border-radius: var(--radius-s);
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  font: bold var(--font-ui-small) var(--font-interface-theme);
+  box-shadow: var(--shadow-s);
+}
+.aa-pdf-flow-layer .aa-pdf-flow-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.aa-pdf-flow-layer .aa-pdf-flow-preview {
+  fill: color-mix(in srgb, var(--interactive-accent) 16%, transparent);
+  stroke: var(--interactive-accent);
+  stroke-width: 1px;
+  stroke-linejoin: round;
+}
+.view-content .aa-pdf-flow-status {
+  position: absolute;
+  bottom: var(--size-4-2);
+  left: var(--size-4-2);
+  right: var(--size-4-2);
+  z-index: 7;
+  padding: var(--size-4-2);
+  color: var(--text-normal);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  font-size: var(--font-ui-small);
+  pointer-events: none;
+}
