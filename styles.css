@@ -2471,7 +2471,7 @@ button.aa-color-swatch {
   font: 700 12px/18px var(--font-interface-theme, system-ui);
   border: 1px solid var(--background-modifier-border, #aaa);
   border-radius: var(--radius-s, 3px);
-  padding: 0 3px;
+  padding: 1px 4px;
   white-space: nowrap;
 }
 .scholiast-keyboard-status {
@@ -2569,6 +2569,10 @@ button.aa-color-swatch {
   overscroll-behavior: none;
   touch-action: none;
 }
+.pdf-viewer-container.aa-pdf-single-page.aa-pdf-zoomed {
+  overflow: auto;
+  touch-action: pan-x pan-y;
+}
 .aa-pdf-single-page .pdfViewer .page {
   --scale-factor: var(--aa-pdf-page-scale, 1);
   --total-scale-factor: calc(var(--scale-factor) * var(--user-unit, 1));
@@ -2594,13 +2598,18 @@ button.aa-color-swatch {
 }
 .aa-pdf-flow-layer .aa-pdf-flow-label {
   position: absolute;
-  transform: translateX(-100%);
-  padding: 2px 5px;
+  transform: translateX(calc(-100% - var(--size-2-2, 4px)));
+  padding: 0 3px;
   border-radius: var(--radius-s);
   background: var(--interactive-accent);
   color: var(--text-on-accent);
-  font: bold var(--font-ui-small) var(--font-interface-theme);
+  border: 1px solid var(--background-primary);
+  font: bold 12px/18px var(--font-interface-theme);
   box-shadow: var(--shadow-s);
+  white-space: nowrap;
+}
+.aa-pdf-flow-layer .aa-pdf-flow-label.is-sentence {
+  transform: translateY(calc(-100% - 2px));
 }
 .aa-pdf-flow-layer .aa-pdf-flow-shape {
   position: absolute;
@@ -2610,10 +2619,14 @@ button.aa-color-swatch {
   overflow: visible;
 }
 .aa-pdf-flow-layer .aa-pdf-flow-preview {
-  fill: color-mix(in srgb, var(--interactive-accent) 16%, transparent);
-  stroke: var(--interactive-accent);
+  fill: none;
+  stroke: color-mix(in srgb, var(--interactive-accent) 75%, transparent);
   stroke-width: 1px;
   stroke-linejoin: round;
+}
+.aa-pdf-flow-layer .aa-pdf-flow-fill {
+  fill: color-mix(in srgb, var(--interactive-accent) 16%, transparent);
+  stroke: none;
 }
 .view-content .aa-pdf-flow-status {
   position: absolute;

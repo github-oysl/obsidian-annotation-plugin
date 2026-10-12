@@ -6,7 +6,7 @@ Read Markdown, PDF and ebooks in Obsidian — **select and capture without the m
 
 [English guide](#english-guide) · [中文使用指南](#中文使用指南) · [源码与开发说明](https://github.com/github-oysl/obsidian-annotation-plugin-src/blob/main/docs/README.md)
 
-> User manual for **0.8.0** (flow notes) / **0.8.0 使用手册（心流笔记）**. Minimum Obsidian version: **1.13.0**。
+> User manual for **0.8.1** (flow notes) / **0.8.1 使用手册（心流笔记）**. Minimum Obsidian version: **1.13.0**。
 
 All screenshots below were captured in **Obsidian for macOS (desktop), Scholiast 0.7.0**, using original demo documents. English examples use English plugin text; the host UI follows its own language setting.
 
@@ -26,7 +26,7 @@ Search **Scholiast** in the command palette for all commands; settings live in *
 
 Annotations are stored separately under the vault's `scholiast/` folder and can sync with the vault; reading and annotation need no network.
 
-> **PDF flow notes are available in 0.8.0.** Read one full page at a time, turn pages with the arrow keys, select text with labels, and capture page or region notes on scans. PDF and ebooks share the keyboard selection settings.
+> **PDF flow notes in 0.8.1:** select a continuous range with a smooth outline and clear keyboard labels. Zoom with the native toolbar and scroll within the enlarged page; capture page or region notes on scans. PDF and ebooks share the keyboard selection settings.
 
 ### Install and update
 
@@ -61,9 +61,9 @@ Plugin ID: `scholiast`. The reader engine is bundled offline; no calibre, accoun
 **PDF**
 
 1. Enable **ebook and PDF keyboard selection** in **Settings → Scholiast**; the activation key defaults to `Space`.
-2. Focus the page. Arrow Right/Down advances a page; Arrow Left/Up goes back. Hold the activation key and type a text-block label, then a sentence label when offered.
-3. Release the key to keep the range, use Left/Right to adjust its endpoint, then press `Enter` to write a note. `Esc` cancels. Space and the mouse wheel do not turn pages.
-4. For scans, run the PDF page-note or region-note command. Move a region with arrows, resize with `Shift`+arrows, and press `Enter` to write.
+2. Focus the page. Arrow Right/Down advances a page; Arrow Left/Up goes back. Hold an arrow to keep turning pages. Hold the activation key and type a text-block label, then a sentence label when offered.
+3. Release the key to keep the range, use Left/Right to adjust its endpoint, then press `Enter` to write a note or `Ctrl/Cmd+Enter` to save a highlight directly. `Esc` cancels. The preview is one smooth, filled frame. Space and the mouse wheel do not turn pages; the wheel scrolls within an enlarged page.
+4. Use the native zoom buttons to enlarge or reduce the page; when enlarged, scroll within the current page. For scans, run the PDF page-note or region-note command. Move a region with arrows, resize with `Shift`+arrows, and press `Enter` to write.
 
 Mouse works too: use the floating toolbar in Markdown/ebooks, or select PDF text and choose a color or note from its context menu.
 
@@ -144,7 +144,7 @@ Scholiast 想做的是让阅读不被打断：读到哪里、想到什么，就�
 
 批注独立保存在知识库的 `scholiast/` 目录，可随知识库同步；阅读与批注不依赖网络服务。
 
-> **0.8.0 已支持 PDF 心流笔记。** PDF 每次展示完整一页，方向键翻页，标签圈选原文；扫描页可用页面或区域笔记。PDF 与电子书共用键盘圈选设置。
+> **0.8.1 改善 PDF 心流笔记。** 临时圈选显示平整的整体外框，键盘标签更清晰；原生工具栏可放大缩小，放大后可在当前页内滚动。扫描页支持页面或区域笔记，PDF 与电子书共用键盘圈选设置。
 
 ### 安装与更新
 
@@ -179,9 +179,9 @@ Scholiast 想做的是让阅读不被打断：读到哪里、想到什么，就�
 **PDF**
 
 1. 在 **设置 → Scholiast** 启用 **电子书与 PDF 键盘圈选**，激活键默认 `Space`。
-2. 聚焦页面，右/下方向键到下一页，左/上方向键到上一页；按住激活键并输入文字块标签，需要时再输入句子标签。
-3. 松键保留圈选，左右键调整终点，`Enter` 写想法，`Esc` 取消。Space 与滚轮不会翻页。
-4. 扫描页可通过命令面板给当前页或区域写想法；方向键移动区域，`Shift`+方向键调整大小，`Enter` 编辑。
+2. 聚焦页面，右/下方向键到下一页，左/上方向键到上一页，可按住方向键连续翻页；按住激活键并输入文字块标签，需要时再输入句子标签。
+3. 松键保留圈选，左右键调整终点；临时范围显示为平整、连续填色的整体外框。`Enter` 写想法，`Ctrl/Cmd+Enter` 直接保存高亮，`Esc` 取消。Space 与滚轮不会翻页，放大后滚轮在当前页内移动。
+4. 原生工具栏可放大缩小，放大后可滚动阅读当前页。扫描页可通过命令面板给当前页或区域写想法；方向键移动区域，`Shift`+方向键调整大小，`Enter` 编辑。
 
 习惯鼠标也可以：Markdown / 电子书使用浮动工具栏，PDF 选文后从右键菜单选颜色或写想法。
 
