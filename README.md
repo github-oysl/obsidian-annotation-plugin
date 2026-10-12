@@ -6,7 +6,7 @@ Read Markdown, PDF and ebooks in Obsidian — **select and capture without the m
 
 [English guide](#english-guide) · [中文使用指南](#中文使用指南) · [源码与开发说明](https://github.com/github-oysl/obsidian-annotation-plugin-src/blob/main/docs/README.md)
 
-> User manual for **0.8.1** (flow notes) / **0.8.1 使用手册（心流笔记）**. Minimum Obsidian version: **1.13.0**。
+> User manual for **0.8.2** (flow notes) / **0.8.2 使用手册（心流笔记）**. Minimum Obsidian version: **1.13.0**。
 
 All screenshots below were captured in **Obsidian for macOS (desktop), Scholiast 0.7.0**, using original demo documents. English examples use English plugin text; the host UI follows its own language setting.
 
@@ -25,6 +25,8 @@ Search **Scholiast** in the command palette for all commands; settings live in *
 - **Capture now, organize later:** grouping, review and export wait until after reading.
 
 Annotations are stored separately under the vault's `scholiast/` folder and can sync with the vault; reading and annotation need no network.
+
+> **Reliability in 0.8.2:** if one view fails to refresh after saving, other views continue updating. One recovery notice appears; reopen the affected view. A refresh failure does not undo a saved annotation.
 
 > **PDF flow notes in 0.8.1:** select a continuous range with a smooth outline and clear keyboard labels. Zoom with the native toolbar and scroll within the enlarged page; capture page or region notes on scans. PDF and ebooks share the keyboard selection settings.
 
@@ -143,6 +145,8 @@ Scholiast 想做的是让阅读不被打断：读到哪里、想到什么，就�
 - **先记后理**：分组、回顾、导出都留到之后，不打断当下阅读。
 
 批注独立保存在知识库的 `scholiast/` 目录，可随知识库同步；阅读与批注不依赖网络服务。
+
+> **0.8.2 改善保存后的刷新可靠性。** 某个视图刷新失败时，其他视图继续更新，并汇总一次提示；重新打开受影响的视图即可恢复。刷新失败不会回滚已保存的批注。
 
 > **0.8.1 改善 PDF 心流笔记。** 临时圈选显示平整的整体外框，键盘标签更清晰；原生工具栏可放大缩小，放大后可在当前页内滚动。扫描页支持页面或区域笔记，PDF 与电子书共用键盘圈选设置。
 
