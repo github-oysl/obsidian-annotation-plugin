@@ -1,7 +1,7 @@
 {
   "id": "scholiast",
   "name": "Scholiast",
-  "version": "0.9.0",
+  "version": "0.8.3",
   "minAppVersion": "1.13.0",
   "description": "Read and annotate Markdown, PDF and ebooks with highlights, notes and tags without editing the source.",
   "author": "slouyang",

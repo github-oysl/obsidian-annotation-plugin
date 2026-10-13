@@ -6,7 +6,7 @@ Read Markdown, PDF and ebooks in Obsidian — **select and capture without the m
 
 [English guide](#english-guide) · [中文使用指南](#中文使用指南) · [源码与开发说明](https://github.com/github-oysl/obsidian-annotation-plugin-src/blob/main/docs/README.md)
 
-> User manual for **0.9.0** (flow notes) / **0.9.0 使用手册（心流笔记）**. Minimum Obsidian version: **1.13.0**。
+> User manual for **0.8.3** (flow notes) / **0.8.3 使用手册（心流笔记）**. Minimum Obsidian version: **1.13.0**。
 
 All screenshots below were captured in **Obsidian for macOS (desktop), Scholiast 0.7.0**, using original demo documents. English examples use English plugin text; the host UI follows its own language setting.
 
@@ -20,7 +20,7 @@ Search **Scholiast** in the command palette for all commands; settings live in *
 
 ### Flow notes in 30 seconds
 
-**New in 0.9.0:** a dismissible first-reading hint introduces annotation capture without moving focus. **Annotation help** is available from the command palette, settings and reading controls, with instructions for the current format. Closing the hint is remembered; saving a real highlight or note completes the guide. Keyboard selection remains opt-in.
+**New in 0.8.3:** a dismissible first-reading hint introduces annotation capture without moving focus. **Annotation help** is available from the command palette, settings and reading controls, with instructions for the current format. Closing the hint is remembered; saving a real highlight or note completes the guide. Keyboard selection remains opt-in.
 
 - **Capture in place:** highlight, write a note and add tags right on the source; the original file is never modified and no markers are inserted.
 - **Keyboard first:** in Markdown, place the cursor and record; in PDFs and ebooks, hold the activation key, type a label to select, and use Left/Right to extend.
@@ -136,7 +136,7 @@ For the complete command and settings reference, use the command palette, **Sett
 
 ## 中文使用指南
 
-**0.9.0 新增：**首次阅读会出现可关闭、不抢焦点的轻提示。命令面板、设置及阅读控件中的 **批注操作帮助** 提供当前格式的操作说明；关闭提示后不再自动弹出，真实高亮或想法保存成功后完成引导。键盘圈选仍需主动开启。
+**0.8.3 新增：**首次阅读会出现可关闭、不抢焦点的轻提示。命令面板、设置及阅读控件中的 **批注操作帮助** 提供当前格式的操作说明；关闭提示后不再自动弹出，真实高亮或想法保存成功后完成引导。键盘圈选仍需主动开启。
 
 Scholiast 想做的是让阅读不被打断：读到哪里、想到什么，就在原地高亮、记想法，不用切窗口，也不用找鼠标。我们把它叫作**心流笔记**。
 
