@@ -2642,3 +2642,40 @@ button.aa-color-swatch {
   font-size: var(--font-ui-small);
   pointer-events: none;
 }
+
+/* 首次轻提示与按格式帮助沿用宿主主题，不自动移动阅读焦点。 */
+.aa-first-use {
+  position: fixed;
+  z-index: var(--layer-popover);
+  right: var(--size-4-4);
+  bottom: var(--size-4-4);
+  max-width: min(420px, calc(100vw - 2 * var(--size-4-4)));
+  padding: var(--size-4-4);
+  color: var(--text-normal);
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-s);
+  font-size: var(--font-ui-small);
+}
+.aa-first-use-actions, .aa-reading-help .aa-help-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-4-2);
+  margin-top: var(--size-4-3);
+}
+.aa-reading-help li { margin-block: var(--size-4-3); line-height: var(--line-height-normal); }
+.aa-reading-help .aa-help-limit { color: var(--text-muted); font-size: var(--font-ui-small); }
+.aa-reading-help .aa-help-tabs button[aria-pressed="true"] { background: var(--interactive-accent); color: var(--text-on-accent); }
+.aa-reading-help .aa-help-close { margin-top: var(--size-4-4); }
+.aa-reading-help-button { display: inline-flex; align-items: center; justify-content: center; }
+.aa-native-reading-help { background: transparent; box-shadow: none; }
+.is-mobile .aa-native-reading-help { min-height: 44px; min-width: 44px; }
+.aa-sidebar-list.aa-windowed-list { display: block; overflow-anchor: none; }
+.aa-windowed-list .aa-window-item { display: flow-root; }
+.aa-windowed-list .aa-window-spacer { height: var(--aa-window-height, 0px); pointer-events: none; }
+:is(.aa-first-use, .aa-reading-help) button, .aa-reading-help-button { min-height: 44px; min-width: 44px; }
+:is(.aa-first-use, .aa-reading-help) button:focus-visible, .aa-reading-help-button:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
