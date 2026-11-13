@@ -323,6 +323,15 @@
   border-radius: var(--radius-m);
 }
 
+/* 批注中心搜索行很宽：弹层不再撑满整行，靠右对齐到筛选/排序按钮一侧。 */
+.aa-library .aa-filter-popover {
+  left: auto;
+  right: 0;
+  width: max-content;
+  min-width: 280px;
+  max-width: min(360px, 100%);
+}
+
 .aa-filter-label {
   margin: 8px 0 4px;
   font-size: 11px;
@@ -1134,27 +1143,23 @@ button.aa-color-swatch {
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-.aa-modal-buttons button:first-child,
 .aa-button-primary {
   background: var(--interactive-accent);
   color: var(--text-on-accent);
 }
 
-.aa-modal-buttons button:first-child:hover,
 .aa-button-primary:hover {
   background: var(--interactive-accent-hover);
   transform: translateY(-1px);
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
-.aa-modal-buttons button:last-child,
 .aa-button-secondary {
   background: transparent;
   color: var(--text-muted);
   border: 1px solid color-mix(in srgb, var(--background-modifier-border) 85%, var(--interactive-accent) 15%);
 }
 
-.aa-modal-buttons button:last-child:hover,
 .aa-button-secondary:hover {
   background: var(--background-modifier-hover);
   color: var(--text-normal);
@@ -1395,6 +1400,55 @@ button.aa-color-swatch {
   margin-top: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* 孤儿批注的“还有 N 条”引导入口，样式与列表项保持同层级。 */
+.aa-orphan-overflow {
+  display: block;
+  width: calc(100% - 16px);
+  margin: 8px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: var(--radius-s);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.aa-orphan-overflow:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+/* 「加入分组」选择列表：整行按钮，与筛选弹层选项同观感。 */
+.aa-group-pick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aa-group-pick {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: var(--radius-s);
+  background: transparent;
+  color: var(--text-normal);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.aa-group-pick:hover {
+  background: var(--background-modifier-hover);
+}
+
+.aa-group-pick:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
 }
 
 /* ========== 多选模式 ========== */
@@ -2429,7 +2483,7 @@ button.aa-color-swatch {
 .aa-ebook-display-popover { position: absolute; z-index: 20; top: calc(100% + var(--size-4-2)); inset-inline-end: 0; display: flex; flex-direction: column; gap: var(--size-4-2); width: 180px; padding: var(--size-4-3); border: 1px solid var(--background-modifier-border); border-radius: var(--radius-m); box-shadow: var(--shadow-s); background: var(--background-primary); color: var(--text-normal); }
 .aa-ebook-font-controls { justify-content: space-between; font-size: var(--font-ui-small); }
 .aa-ebook-annotation-tools { display: flex; align-items: center; gap: var(--size-4-2); flex-wrap: wrap; }
-.aa-ebook-tool-label { font-size: var(--font-ui-smaller); color: var(--text-muted); margin-inline-end: var(--size-4-1); }
+
 .aa-ebook button.aa-ebook-color { width: 20px; height: 20px; min-height: 20px; padding: 0; border-radius: 50%; background: var(--aa-accent); box-shadow: none; }
 .aa-ebook button.aa-ebook-note-action { width: auto; padding-inline: var(--size-4-2); margin-inline-start: var(--size-4-1); font-size: var(--font-ui-small); color: var(--text-normal); }
 .aa-ebook-search { display: flex; gap: var(--size-4-2); align-items: center; }
@@ -2456,6 +2510,17 @@ button.aa-color-swatch {
 
 /* 阅读 iframe 与宿主共用的键盘圈选样式；位置由当前页几何计算。 */
 .aa-pdf-region-mode { cursor: crosshair; user-select: none; }
+
+/* 框选拖拽中的实时预览：虚线边框 + 淡填充，不拦截指针事件。 */
+.aa-pdf-region-preview {
+  position: absolute;
+  z-index: 6;
+  pointer-events: none;
+  border: 1px dashed var(--interactive-accent);
+  background: color-mix(in srgb, var(--interactive-accent) 16%, transparent);
+  border-radius: var(--radius-s);
+  box-sizing: border-box;
+}
 
 .scholiast-keyboard-overlay {
   position: fixed;
