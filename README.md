@@ -73,7 +73,7 @@ Mouse works too: use the floating toolbar in Markdown/ebooks, or select PDF text
 
 ### Recommended shortcuts
 
-Bind these four commands in **Settings → Hotkeys** so you rarely leave the keyboard. No command has a default shortcut; avoid assigning the ebook activation key to another action.
+Following Obsidian's convention, commands ship without default hotkeys. Bind these in **Settings → Hotkeys** so you rarely leave the keyboard — a macOS-friendly starting set: **⌘⇧E** edit the annotation at the cursor, **⌘⇧L** locate it in the sidebar, **⌘⇧⌫** delete it, **⌘⇧H** quick highlight, **⌘⇧N** note the selection. Avoid assigning the ebook activation key to another action.
 
 | Command | Use |
 | --- | --- |
@@ -100,7 +100,7 @@ Bind these four commands in **Settings → Hotkeys** so you rarely leave the key
 
 **Markdown: the cursor is the range.** You do not have to select first — **Highlight current selection** / **Add note to current selection** infers the range: an ATX heading uses its heading text, prose uses the current sentence (falling back to the paragraph), and fenced code uses the current nonempty code line. Empty lines and fence markers create nothing.
 
-**Ebooks: label selection.** Hold the activation key → type a paragraph/sentence label to pick the start → use Left/Right to extend by sentence (the reader follows the endpoint across pages in the same chapter) → press `Enter` to write a note. Releasing the key alone never saves; `Esc` cancels, and `Backspace` steps back one level while choosing labels. Cross-chapter ranges are not supported yet.
+**Ebooks: label selection.** Press the activation key once to enter selection and again to exit (toggle is the default; the original hold style stays available in settings) → type a paragraph/sentence label to pick the start → use Left/Right to extend by sentence (the reader follows the endpoint across pages in the same chapter) → `Enter` writes a note, `Mod+Enter` saves a plain highlight, and `E` edits the annotation already saved at the range. A quick-highlight mode swaps `Enter`/`Mod+Enter` in settings. Releasing the key alone never saves; `Esc` cancels but keeps the range, and `Backspace` steps back one level while choosing labels. Cross-chapter ranges are not supported yet.
 
 **PDF: page and range.** Outside selection mode, arrows turn a physical page. Hold the activation key → choose a block/sentence label → release to retain the range → adjust the endpoint with Left/Right → press `Enter` to write. Page and region commands also work when keyboard selection is disabled. A near match asks you to choose the existing annotation before editing.
 
@@ -195,7 +195,7 @@ Scholiast 想做的是让阅读不被打断：读到哪里、想到什么，就�
 
 ### 推荐快捷键
 
-为下面四个命令在 **设置 → 快捷键** 绑定顺手的组合键，就能尽量不离开键盘。命令默认都没有快捷键，注意别把电子书的激活键再分给其他动作。
+按 Obsidian 社区惯例，命令出厂不带默认热键。在 **设置 → 快捷键** 里给它们绑上顺手的组合键即可尽量不离开键盘；一套 Mac 友好的起点：**⌘⇧E** 编辑光标处的批注、**⌘⇧L** 在侧栏定位、**⌘⇧⌫** 删除、**⌘⇧H** 快速高亮、**⌘⇧N** 给选中写批注。注意别把电子书的激活键再分给其他动作。
 
 | 命令 | 用途 |
 | --- | --- |
@@ -222,7 +222,7 @@ Scholiast 想做的是让阅读不被打断：读到哪里、想到什么，就�
 
 **Markdown：光标即范围。** 不必先选文——`高亮当前选中` / `给当前选中写批注` 就近推断：标题取标题正文，正文取当前句子（无句界时取段落），围栏代码取当前非空代码行；空行与围栏标记不创建批注。
 
-**电子书：标签圈选。** 按住激活键 → 输入段落/句子标签选起点 → 左右键逐句增减（同章节跨页会跟随终点）→ `Enter` 记想法。只松开激活键不会保存；`Esc` 取消，选择标签时 `Backspace` 回上一级。跨章节范围暂不支持。
+**电子书：标签圈选。** 按一下激活键进入圈选、再按退出（默认为单击切换；设置里保留原版长按按住）→ 输入段落/句子标签选起点 → 左右键逐句增减（同章节跨页会跟随终点）→ `Enter` 记想法、`⌘↩` 存纯高亮、按 `E` 编辑该范围已有的批注。设置里还有「Enter 直接存高亮」的快速模式。只松开激活键不会保存；`Esc` 取消但保留范围，选择标签时 `Backspace` 回上一级。跨章节范围暂不支持。
 
 **PDF：单页与范围。** 未圈选时方向键翻物理页；按住激活键 → 输入块/句标签 → 松键保留范围 → 左右键调整终点 → `Enter` 记想法。页面与区域命令不要求开启键盘圈选；近似范围需先明确选择已有批注再编辑。
 
