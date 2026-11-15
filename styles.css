@@ -139,13 +139,56 @@
   outline-offset: 2px;
 }
 
-/* 空状态 */
-.aa-sidebar-empty {
-  padding: 32px 20px;
+/* 统一的空态卡：图标 + 状态 + 引导 + 动作按钮。 */
+.aa-empty-state {
+  margin: 16px 4px;
+  padding: 28px 20px;
+  border: 1px dashed var(--background-modifier-border);
+  border-radius: var(--radius-m);
   text-align: center;
   color: var(--text-muted);
+}
+
+.aa-empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 6px;
+  color: var(--text-faint);
+}
+
+.aa-empty-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.aa-empty-title {
   font-size: 13px;
-  line-height: 1.6;
+  color: var(--text-normal);
+}
+
+.aa-empty-hint {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--text-faint);
+  line-height: 1.5;
+}
+
+.aa-empty-action {
+  margin-top: 12px;
+  padding: 4px 14px;
+  border: 1px solid color-mix(in srgb, var(--interactive-accent) 40%, transparent);
+  border-radius: var(--radius-s);
+  background: color-mix(in srgb, var(--interactive-accent) 10%, transparent);
+  color: var(--interactive-accent);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.aa-empty-action:hover {
+  background: color-mix(in srgb, var(--interactive-accent) 18%, transparent);
 }
 
 .aa-sidebar-search-row {
@@ -393,14 +436,15 @@
 
 :is(.aa-sidebar, .aa-library) .aa-card {
   position: relative;
-  margin: 0 0 2px;
+  margin: 0 0 6px;
   padding: 8px 8px 8px 10px;
   min-width: 0;
   overflow: hidden;
   border: none;
   border-left: 3px solid var(--aa-accent, var(--interactive-accent));
   border-radius: var(--radius-s);
-  background: transparent;
+  /* 微弱底色让卡片彼此分开；选中/hover 在此基础上加深。 */
+  background: var(--background-secondary);
   box-shadow: none;
   cursor: default;
 }
@@ -413,6 +457,22 @@
   background: var(--background-modifier-hover);
   box-shadow: none;
   transform: none;
+}
+
+/* 位置存疑的卡片上直接给出「重新指派」动作。 */
+.aa-card-reassign {
+  margin-top: 6px;
+  padding: 2px 10px;
+  border: 1px solid color-mix(in srgb, var(--interactive-accent) 40%, transparent);
+  border-radius: var(--radius-s);
+  background: color-mix(in srgb, var(--interactive-accent) 8%, transparent);
+  color: var(--interactive-accent);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.aa-card-reassign:hover {
+  background: color-mix(in srgb, var(--interactive-accent) 16%, transparent);
 }
 
 :is(.aa-sidebar, .aa-library) .aa-card.is-selectable {
@@ -791,42 +851,6 @@
   color: var(--text-normal);
 }
 
-.aa-library-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-shrink: 0;
-  padding: 8px 8px 4px 12px;
-}
-
-.aa-library-header h3 {
-  margin: 0;
-  min-width: 0;
-  font-size: var(--font-ui-medium, 15px);
-  font-weight: 600;
-  color: var(--text-normal);
-}
-
-.aa-library-header button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-s);
-  background: transparent;
-  color: var(--text-faint);
-  cursor: pointer;
-}
-
-.aa-library-header button:hover {
-  background: var(--background-modifier-hover);
-  color: var(--text-normal);
-}
-
 .aa-library-body {
   display: flex;
   flex: 1;
@@ -872,7 +896,6 @@
 }
 
 .aa-library-twist:hover,
-.aa-library-header button:focus-visible,
 .aa-library-twist:focus-visible {
   background: var(--background-modifier-hover);
   color: var(--text-normal);
@@ -963,6 +986,10 @@
   min-height: 24px;
 }
 
+.aa-detail-tag-status { font-size: var(--font-ui-smaller); color: var(--text-muted); }
+.aa-detail-tag-status:empty { display: none; }
+.aa-detail-tag-status.is-error { color: var(--text-error); }
+
 /* 标签行末尾的圆形 ＋ 按钮，点击后切换为输入框 */
 .aa-note-tag-add {
   display: inline-flex;
@@ -1000,7 +1027,6 @@
   padding: 4px 8px;
 }
 
-.aa-card-edit-hint,
 .aa-note-modal-hint,
 .aa-shortcut-hint {
   margin: 6px 0 0;
@@ -1059,12 +1085,28 @@
   margin: 0;
 }
 
-.aa-note-modal-colors {
+/* 输入框下方的元数据行：色板、标签 chips 与模式切换共用一行。 */
+.aa-note-meta {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.aa-note-meta .aa-note-tags {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+  padding-left: 8px;
+  border-left: 1px solid var(--background-modifier-border);
+}
+
+.aa-note-modal-colors {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
   font-size: 12px;
   color: var(--text-muted);
 }
@@ -1072,10 +1114,10 @@
 button.aa-color-swatch {
   appearance: none;
   display: inline-block;
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
   padding: 0;
   border-radius: 50%;
   cursor: pointer;
@@ -1392,6 +1434,116 @@ button.aa-color-swatch {
   border-radius: 3px;
 }
 
+/* 章节/页分组（电子书章节、PDF 页）：与批注分组同一语言，组头在阅读时可吸附。 */
+.aa-section-group {
+  margin: 8px 0;
+  border: 1px solid color-mix(in srgb, var(--background-modifier-border) 78%, var(--interactive-accent) 22%);
+  border-radius: 12px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--background-primary) 86%, transparent 14%);
+}
+
+.aa-section-group.is-current {
+  border-color: color-mix(in srgb, var(--background-modifier-border) 55%, var(--interactive-accent) 45%);
+}
+
+.aa-section-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  cursor: pointer;
+  user-select: none;
+  background: color-mix(in srgb, var(--background-secondary) 92%, var(--interactive-accent) 8%);
+  transition: background 0.15s;
+}
+
+.aa-section-header:hover {
+  background: color-mix(in srgb, var(--background-secondary) 88%, var(--interactive-accent) 12%);
+}
+
+.aa-section-header:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: -2px;
+}
+
+.aa-section-arrow {
+  font-size: 9px;
+  color: var(--text-muted);
+  width: 10px;
+  flex-shrink: 0;
+}
+
+.aa-section-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aa-section-group.is-current .aa-section-title {
+  color: var(--text-normal);
+}
+
+.aa-section-current {
+  font-size: 10px;
+  color: var(--interactive-accent);
+  border: 1px solid color-mix(in srgb, var(--interactive-accent) 40%, transparent);
+  border-radius: 4px;
+  padding: 0 5px;
+  flex-shrink: 0;
+}
+
+.aa-section-count {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.aa-section-body {
+  padding: 4px 8px 6px;
+}
+
+.aa-section-body.is-collapsed {
+  display: none;
+}
+
+.aa-section-body .aa-card {
+  margin: 6px 0;
+}
+
+/* 页签行末尾的排序下拉。 */
+.aa-sort-select {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 2px 6px;
+  min-width: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.aa-sort-select:hover,
+.aa-sort-select:focus {
+  color: var(--text-normal);
+}
+
+/* 刚创建批注的「新」标记。 */
+.aa-card-new {
+  font-size: 10px;
+  color: var(--interactive-accent);
+  border: 1px solid color-mix(in srgb, var(--interactive-accent) 40%, transparent);
+  border-radius: 4px;
+  padding: 0 4px;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+
 .aa-ungrouped-separator {
   padding: 12px 6px 4px;
   font-size: 11px;
@@ -1603,129 +1755,50 @@ button.aa-color-swatch {
 }
 
 
-/* ========== 批注中心新布局 ========== */
+/* ========== 批注中心布局 ========== */
 
-.aa-library-header {
-  align-items: flex-start;
-  padding: 14px 16px 10px;
-  border-bottom: 1px solid var(--background-modifier-border);
-}
-
-.aa-library-title-wrap {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  min-width: 0;
-}
-
-.aa-library-title-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  color: var(--interactive-accent);
-}
-
-.aa-library-title-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.aa-library-title-text {
-  min-width: 0;
-}
-
-.aa-library-title-text h3 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 700;
+/* 工具栏内的标题与总数（搜索行最左侧）。 */
+.aa-library-name {
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text-normal);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.aa-library-title-text p {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.aa-library-header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  margin-left: auto;
 }
 
 .aa-library-total {
+  flex: 0 0 auto;
   font-size: 12px;
   color: var(--text-faint);
   white-space: nowrap;
 }
 
-.aa-library-header-right button {
+/* 搜索行右侧的图标按钮：视图切换与更多操作。 */
+.aa-view-toggle {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-s);
-  background: transparent;
-  color: var(--text-faint);
-  cursor: pointer;
-}
-
-.aa-library-header-right button:hover {
-  background: var(--background-modifier-hover);
-  color: var(--text-normal);
-}
-
-/* 搜索行右侧的文字按钮：筛选 / 排序 / 视图切换 */
-.aa-filter-text-button,
-.aa-sort-button,
-.aa-view-toggle {
-  flex: 0 0 auto;
-  height: 28px;
-  padding: 0 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-s);
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
   font-size: 12px;
-  white-space: nowrap;
 }
 
-.aa-filter-text-button svg,
-.aa-sort-button svg,
 .aa-view-toggle svg {
   width: 13px;
   height: 13px;
   flex-shrink: 0;
 }
 
-.aa-filter-text-button:hover,
-.aa-sort-button:hover,
 .aa-view-toggle:hover {
   background: var(--background-modifier-hover);
   color: var(--text-normal);
-}
-
-.aa-filter-text-button.is-active {
-  color: var(--interactive-accent);
-  border-color: color-mix(in srgb, var(--interactive-accent) 45%, var(--background-modifier-border));
 }
 
 /* 列表 + 详情预览布局 */
@@ -1830,7 +1903,7 @@ button.aa-color-swatch {
   border-left: 3px solid var(--aa-accent, var(--interactive-accent));
   border-radius: var(--radius-s);
   padding: 8px 10px;
-  font-size: 12px;
+  font-size: var(--font-ui-small, 13px);
   line-height: 1.6;
   color: var(--text-normal);
   overflow-wrap: anywhere;
@@ -1841,7 +1914,7 @@ button.aa-color-swatch {
 }
 
 .aa-detail-note {
-  font-size: 12px;
+  font-size: var(--font-ui-small, 13px);
   line-height: 1.6;
   color: var(--text-muted);
   overflow-wrap: anywhere;
@@ -2055,11 +2128,6 @@ button.aa-color-swatch {
   font-size: 12px;
 }
 
-.aa-filter-text-button {
-  width: auto;
-}
-
-
 /* ========== 批注中心/侧栏导航与搜索框专项修复 ==========
    Obsidian 全局 input/button 元素样式的特异性高于裸 class，
    统一用容器前缀提高优先级，保证左对齐、单行省略、计数右对齐。 */
@@ -2229,8 +2297,6 @@ button.aa-color-swatch {
   align-items: center;
 }
 
-.aa-library .aa-sidebar-search-row .aa-filter-text-button,
-.aa-library .aa-sidebar-search-row .aa-sort-button,
 .aa-library .aa-sidebar-search-row .aa-view-toggle {
   height: 30px;
 }
@@ -2317,6 +2383,18 @@ button.aa-color-swatch {
   margin-bottom: var(--size-4-3);
 }
 
+/* With details beside the list, use the card for scanning and the detail for full reading. */
+@container aa-library (min-width: 951px) {
+  .aa-library.has-detail .aa-card-text,
+  .aa-library.has-detail .aa-card-note {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  .aa-library.has-detail .aa-card-text.is-expanded { display: block; -webkit-line-clamp: unset; }
+}
+
 :is(.aa-sidebar, .aa-library) .aa-active-filters {
   display: flex;
   flex-wrap: wrap;
@@ -2381,6 +2459,8 @@ button.aa-color-swatch {
 
 .aa-library .aa-detail-resize:hover { background: var(--background-modifier-hover); }
 .aa-library .aa-detail-back { display: none; }
+.aa-library .aa-filter-path-section { display: none; }
+.aa-library .aa-filter-path { display: block; width: 100%; max-width: 100%; margin-top: 6px; }
 .aa-library .aa-sidebar-list.is-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
 .aa-library .aa-sidebar-list { overflow-anchor: none; }
 .aa-library .aa-card-title-row { min-height: 28px; }
@@ -2404,26 +2484,26 @@ button.aa-color-swatch {
 
 @container aa-library (max-width: 700px) {
   .aa-library .aa-library-nav { display: none; }
-  .aa-library .aa-library-title-text p,
+  .aa-library .aa-filter-path-section { display: block; }
   .aa-library .aa-library-total { display: none; }
   .aa-library .aa-sidebar-search-row { flex-wrap: wrap; }
-  .aa-library .aa-sidebar-search-row .aa-sidebar-search { flex-basis: 100%; }
-  .aa-library .aa-library-header { padding: var(--size-4-2) var(--size-4-3); }
+  .aa-library .aa-sidebar-search-row .aa-sidebar-search { flex-basis: 100%; order: -1; }
 }
 
 :is(.aa-sidebar, .aa-library) :is(.aa-quote-toggle, .aa-card-locate, .aa-active-filter):focus-visible,
-.aa-library :is(.aa-detail-resize, .aa-detail-back, .aa-detail-actions button, .aa-sort-button, .aa-view-toggle):focus-visible {
+.aa-library :is(.aa-detail-resize, .aa-detail-back, .aa-detail-actions button, .aa-filter-button, .aa-view-toggle):focus-visible {
   outline: 2px solid var(--interactive-accent);
   outline-offset: 2px;
 }
 
 @media (pointer: coarse) {
   .aa-library .aa-card-title-row { min-height: 44px; }
-  :is(.aa-sidebar, .aa-library) :is(button.aa-card-locate, .aa-quote-toggle, .aa-active-filter, .aa-detail-actions button, .aa-detail-back, .aa-filter-text-button, .aa-sort-button, .aa-view-toggle, .aa-clear-filters, .aa-filter-apply, .aa-filter-clear, .aa-filter-close) {
+  :is(.aa-sidebar, .aa-library) :is(button.aa-card-locate, .aa-quote-toggle, .aa-active-filter, .aa-detail-actions button, .aa-detail-back, .aa-filter-button, .aa-view-toggle, .aa-clear-filters, .aa-filter-apply, .aa-filter-clear, .aa-filter-close) {
     min-width: 44px;
     min-height: 44px;
   }
   .aa-selection-toolbar :is(.aa-selection-color, .aa-selection-comment) { min-width: 44px; min-height: 44px; }
+  :is(.aa-library .aa-detail-tags, .aa-note-modal .aa-note-tags) :is(.aa-note-tag button, .aa-note-tag-add) { min-width: 44px; min-height: 44px; }
 }
 
 /* ========== 设置页颜色与提示 ========== */
@@ -2467,6 +2547,14 @@ button.aa-color-swatch {
   line-height: 1.6;
   border: 1px solid var(--background-modifier-border);
 }
+
+/* 设置页「关于」里的操作行：帮助按钮与说明文字并排。 */
+.aa-settings-about-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
 /* Multi-format reader. Layout follows the owning Obsidian view. */
 .aa-ebook { display: flex; flex-direction: column; height: 100%; gap: var(--size-4-2); container-type: inline-size; }
 .aa-ebook-controls { display: flex; gap: var(--size-4-2); align-items: center; min-width: 0; padding-bottom: var(--size-4-2); border-bottom: 1px solid var(--background-modifier-border); }
@@ -2486,13 +2574,35 @@ button.aa-color-swatch {
 
 .aa-ebook button.aa-ebook-color { width: 20px; height: 20px; min-height: 20px; padding: 0; border-radius: 50%; background: var(--aa-accent); box-shadow: none; }
 .aa-ebook button.aa-ebook-note-action { width: auto; padding-inline: var(--size-4-2); margin-inline-start: var(--size-4-1); font-size: var(--font-ui-small); color: var(--text-normal); }
+/* 全书阅读进度：工具栏下方一行细 bar + 右侧章名/百分比。 */
+.aa-ebook-progress { display: flex; align-items: center; gap: var(--size-4-2); }
+.aa-ebook-progress-fill { position: relative; flex: 1; height: 3px; border-radius: 2px; background: var(--background-modifier-border); overflow: hidden; }
+.aa-ebook-progress-fill::after { content: ""; position: absolute; inset: 0; width: var(--aa-progress, 0%); background: var(--interactive-accent); border-radius: 2px; transition: width 0.25s ease; }
+.aa-ebook-progress-label { flex-shrink: 0; max-width: 45%; font-size: var(--font-ui-smaller); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* 搜索悬浮卡：盖在阅读区顶部，关闭状态跟随内部搜索行的 is-hidden。 */
+.aa-ebook-search-float {
+  position: absolute;
+  top: var(--size-4-2);
+  left: var(--size-4-2);
+  right: var(--size-4-2);
+  z-index: 10;
+  padding: var(--size-4-2);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+.aa-ebook-search-float:has(.aa-ebook-search.is-hidden) { display: none; }
+
 .aa-ebook-search { display: flex; gap: var(--size-4-2); align-items: center; }
 .aa-ebook-search input { flex: 1; min-width: 0; }
 .aa-ebook-body { position: relative; display: flex; flex: 1; min-height: 0; gap: var(--size-4-2); }
 .aa-ebook-frame { flex: 1; width: 100%; height: 100%; border: 1px solid var(--background-modifier-border); border-radius: var(--radius-m); min-width: 0; background: var(--background-primary); }
 .aa-ebook-notes { width: 30%; min-width: 220px; overflow: auto; padding: var(--size-4-2); background: var(--background-secondary); border-radius: var(--radius-m); }
 .aa-ebook .is-hidden { display: none; }
-.aa-ebook-results { max-height: 20%; overflow: auto; }
+/* 结果列表在悬浮卡内：上限用视口高度，不再依赖父级高度。 */
+.aa-ebook-results { max-height: min(40vh, 320px); overflow: auto; margin-top: var(--size-4-2); }
 .aa-ebook-results:empty { display: none; }
 .aa-ebook-results button { display: block; width: 100%; text-align: start; }
 .aa-ebook-status { color: var(--text-muted); }
@@ -2559,7 +2669,8 @@ button.aa-color-swatch {
 .aa-reading-card .aa-card-source {
   padding: var(--size-4-2);
   border-radius: var(--radius-s);
-  background: var(--background-secondary);
+  /* 卡片本体已有次底色，引用块再浅一档，保持两段层次。 */
+  background: color-mix(in srgb, var(--background-secondary) 55%, transparent);
 }
 
 .aa-reading-card .aa-card-section-label {
@@ -2618,15 +2729,105 @@ button.aa-color-swatch {
 .aa-ebook-drawer { position: absolute; z-index: 12; inset: 0 0 0 auto; width: min(360px, 90%); overflow: auto; background: var(--background-secondary); border-inline-start: 1px solid var(--background-modifier-border); box-shadow: var(--shadow-s); }
 .aa-ebook .aa-ebook-annotation-tools { position: absolute; z-index: 15; left: var(--aa-selection-left, 8px); top: var(--aa-selection-top, 56px); max-width: calc(100% - 16px); padding: var(--size-4-2); border-radius: var(--radius-m); background: var(--background-primary); border: 1px solid var(--background-modifier-border); box-shadow: var(--shadow-s); }
 .aa-ebook-results button.is-selected { background: var(--background-modifier-hover); outline: 1px solid var(--interactive-accent); }
-.aa-note-navigation-mode { color: var(--text-muted); font-size: var(--font-ui-small); }
+/* 弹窗元数据行尾的模式切换 chip：开启「Tab 换色」时才渲染。 */
+.aa-note-navigation-mode {
+  margin-left: auto;
+  padding: 2px 10px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  cursor: pointer;
+}
+.aa-note-navigation-mode:hover { color: var(--text-normal); border-color: var(--interactive-accent); }
+.aa-note-navigation-mode[aria-pressed="true"] { color: var(--interactive-accent); border-color: var(--interactive-accent); }
 .scholiast-delete-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
 .scholiast-delete-label { position: absolute; background: var(--text-error, #c43b3b); color: var(--text-on-accent, white); border-radius: 3px; padding: 2px 5px; font: bold 12px monospace; }
 .scholiast-delete-status { position: fixed; bottom: 8px; inset-inline: 8px; z-index: 51; max-height: 32%; overflow: auto; background: var(--background-secondary); color: var(--text-normal); border: 1px solid var(--background-modifier-border); border-radius: var(--radius-m); padding: 8px; font-size: 12px; }
 .scholiast-delete-status:empty { display: none; }
-.aa-batch-bar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--size-4-2); padding: var(--size-4-2); border-bottom: 1px solid var(--background-modifier-border); }
+/* 批量条固定在列表底部（append 到 content 之后），用顶边线分隔。 */
+.aa-batch-bar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--size-4-2); padding: var(--size-4-2); border-top: 1px solid var(--background-modifier-border); flex-shrink: 0; }
 .aa-batch-bar input { min-width: 100px; width: 160px; }
 
 .aa-card.is-annotation-selected { outline: 2px solid var(--interactive-accent); outline-offset: -2px; }
+
+/* 阅读侧栏：最新一条置顶，页内多条同时可见，点选的单条另有边框。 */
+.aa-sidebar .aa-latest-section { margin-bottom: 12px; }
+.aa-sidebar .aa-page-summary {
+  margin: 0 12px 8px;
+  padding: 5px 9px;
+  border: 1px solid color-mix(in srgb, var(--interactive-accent) 28%, var(--background-modifier-border));
+  border-radius: var(--radius-s);
+  background: color-mix(in srgb, var(--interactive-accent) 7%, var(--background-primary));
+  color: var(--text-accent);
+  font-size: var(--font-ui-smaller);
+  text-align: left;
+  cursor: pointer;
+}
+.aa-sidebar .aa-page-summary.is-hidden { display: none; }
+.aa-sidebar .aa-page-summary:focus-visible { outline: 2px solid var(--interactive-accent); }
+.aa-sidebar .aa-page-section { margin-bottom: 12px; }
+.aa-sidebar .aa-page-heading { display: flex; justify-content: space-between; gap: 8px; padding: 5px 2px 7px; color: var(--text-accent); font-size: var(--font-ui-smaller); font-weight: 600; }
+.aa-sidebar .aa-latest-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 2px 7px;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-weight: 600;
+}
+.aa-sidebar .aa-latest-location { color: var(--text-faint); font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aa-sidebar .aa-reading-card.is-reading-compact { padding: 10px 11px 9px 13px; }
+.aa-sidebar .is-reading-compact .aa-card-source { padding: 0; background: transparent; }
+.aa-sidebar .is-reading-compact .aa-card-source .aa-card-text {
+  border: 0;
+  padding: 0;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  line-height: 1.6;
+}
+.aa-sidebar .is-reading-compact:has(.aa-card-thought) .aa-card-source { margin-top: 8px; }
+.aa-sidebar .is-reading-compact:has(.aa-card-thought) .aa-card-source .aa-card-text {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  -webkit-line-clamp: 2;
+}
+.aa-sidebar .is-reading-compact .aa-card-thought { margin: 0; padding: 0; }
+.aa-sidebar .is-reading-compact .aa-card-thought .aa-card-note { margin: 0; font-weight: 500; }
+.aa-sidebar .is-reading-compact .aa-card-note.is-collapsible:not(.is-expanded) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.aa-sidebar .is-reading-compact .aa-card-note.is-expanded { display: block; }
+.aa-sidebar .is-reading-compact .aa-card-meta { border-top: 1px solid var(--background-modifier-border); padding-top: 6px; margin-top: 9px; }
+.aa-sidebar .is-reading-compact button.aa-card-locate { width: auto; padding: 0 3px; font-size: 11px; white-space: nowrap; color: var(--text-muted); }
+.aa-sidebar .aa-reading-card.is-on-reading-page {
+  background: color-mix(in srgb, var(--interactive-accent) 9%, var(--background-secondary));
+}
+.aa-sidebar .aa-reading-card.is-annotation-selected {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: -2px;
+}
+.aa-sidebar .aa-card-page-status { margin-bottom: 5px; font-size: 11px; font-weight: 600; color: var(--interactive-accent); }
+.aa-sidebar .aa-card-page-status.is-hidden { display: none; }
+.aa-sidebar .aa-card-selected-status { display: none; margin-bottom: 5px; font-size: 11px; font-weight: 600; color: var(--interactive-accent); }
+.aa-sidebar .aa-reading-card.is-annotation-selected .aa-card-selected-status { display: block; }
+.aa-sidebar .aa-reading-card.is-annotation-selected .aa-card-page-status { display: none; }
+.aa-sidebar .aa-section-group.is-current .aa-section-header { background: color-mix(in srgb, var(--interactive-accent) 11%, var(--background-secondary)); }
+
+/* 触屏下把更多操作放到底行，保留想法与原文的完整行宽。 */
+.aa-sidebar.is-touch .is-reading-compact .aa-card-hover-actions { top: auto; bottom: 4px; right: 5px; }
+.aa-sidebar.is-touch .is-reading-compact .aa-card-hover-actions button:first-child { display: none; }
+.aa-sidebar.is-touch .is-reading-compact .aa-card-meta { padding-right: 48px; }
+@media (hover: none) {
+  .aa-sidebar .is-reading-compact .aa-card-hover-actions { top: auto; bottom: 4px; right: 5px; }
+  .aa-sidebar .is-reading-compact .aa-card-hover-actions button:first-child { display: none; }
+  .aa-sidebar .is-reading-compact .aa-card-meta { padding-right: 48px; }
+}
 
 /* 单页阅读保留原生分页几何供懒加载和搜索定位，只呈现当前页。 */
 .pdf-viewer-container.aa-pdf-single-page {
